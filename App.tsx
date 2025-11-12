@@ -1,4 +1,3 @@
-
 // App.tsx
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
@@ -12,6 +11,7 @@ import { api } from './services/api';
 import { supabase } from './services/supabase';
 import { authService } from './services/authService';
 import type { User } from './types';
+import { useOnboardingStore } from './store/onboardingStore';
 
 // Layouts
 import MainLayout from './components/layouts/MainLayout';
@@ -30,11 +30,13 @@ import SelectOrganization from './pages/onboarding/SelectOrganization';
 import AddEmployee from './pages/onboarding/AddEmployee';
 import VerificationDashboard from './pages/verification/VerificationDashboard';
 import UserManagement from './pages/admin/UserManagement';
-import SiteManagement from './pages/admin/OrganizationManagement';
+// FIX: Changed import to named import as OrganizationManagement.tsx has no default export
+import { SiteManagement } from './pages/admin/OrganizationManagement';
 import RoleManagement from './pages/admin/RoleManagement';
 import ModuleManagement from './pages/admin/ModuleManagement';
 import { ApiSettings } from './pages/developer/ApiSettings';
 import OperationsDashboard from './pages/operations/OperationsDashboard';
+// FIX: The file 'pages/site/SiteDashboard.tsx' is empty and not a module. The correct component is in 'pages/site/OrganizationDashboard.tsx'.
 import SiteDashboard from './pages/site/OrganizationDashboard';
 import ProfilePage from './pages/profile/ProfilePage';
 import AttendanceDashboard from './pages/attendance/AttendanceDashboard';
@@ -183,6 +185,7 @@ const App: React.FC = () => {
       setUser(appUser);
       if (!appUser) {
           resetAttendance();
+          useOnboardingStore.getState().reset();
       }
     });
 

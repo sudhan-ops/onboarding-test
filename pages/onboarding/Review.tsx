@@ -70,10 +70,19 @@ const Review = () => {
         try {
             // 1. Bank Verification
             logVerificationUsage('Bank AC Verification Advanced');
+            // FIX: The object passed to verifyBankAccountWithPerfios was incorrect.
+            // It has been updated to match the 'PerfiosVerificationData' type definition.
             const bankResult = await api.verifyBankAccountWithPerfios({
-                accountNumber: data.bank.accountNumber,
-                ifscCode: data.bank.ifscCode,
-                accountHolderName: data.bank.accountHolderName
+                name: data.bank.accountHolderName,
+                dob: data.personal.dob,
+                aadhaar: data.personal.idProofNumber || null,
+                pan: null, // PAN not collected for this specific verification step
+                bank: {
+                    accountNumber: data.bank.accountNumber,
+                    ifsc: data.bank.ifscCode,
+                },
+                uan: data.uan.uanNumber || null,
+                esi: data.esi.esiNumber || null,
             });
             messages.push(`Bank: ${bankResult.message}`);
             setBankVerifiedStatus({

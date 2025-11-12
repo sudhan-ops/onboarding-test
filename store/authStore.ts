@@ -1,4 +1,5 @@
 
+
 import { create } from 'zustand';
 import { authService } from '../services/authService';
 import type { User } from '../types';
@@ -66,7 +67,7 @@ export const useAuthStore = create<AuthState>()(
       error: null,
       loading: false,
       
-      setUser: (user) => set({ user, error: null }),
+      setUser: (user) => set({ user, error: null, loading: false }),
       setInitialized: (initialized) => set({ isInitialized: initialized }),
       setLoading: (loading) => set({ loading }),
       resetAttendance: () => set({
@@ -79,15 +80,30 @@ export const useAuthStore = create<AuthState>()(
 
       loginWithEmail: async (email, password) => {
         set({ error: null, loading: true });
-        const { error } = await authService.signInWithPassword(email, password);
-        
-        if (error) {
-          set({ error: getFriendlyAuthError(error.message), loading: false });
-          return { error: { message: error.message } };
+        const { data, error } = await authService.signInWithPassword(email, password);
+
+        // Handle sign-in errors
+        if (error || !data.user) {
+          const friendlyError = getFriendlyAuthError(error?.message || 'Invalid login credentials');
+          set({ error: friendlyError, loading: false });
+          return { error: { message: friendlyError } };
         }
+
+        // If sign-in is successful, we take full control.
+        const appUser = await authService.getAppUserProfile(data.user);
         
-        // On success, the onAuthStateChange listener will call setUser. loading is handled by the listener.
-        return { error: null };
+        if (appUser) {
+            // Success case: profile fetched
+            set({ user: appUser, error: null, loading: false });
+            return { error: null };
+        } else {
+            // Critical failure: sign-in worked, but profile fetch failed.
+            // Sign the user out to prevent an inconsistent state.
+            await authService.signOut(); 
+            const friendlyError = 'Login successful, but failed to retrieve user profile. Please try again.';
+            set({ user: null, error: friendlyError, loading: false });
+            return { error: { message: friendlyError } };
+        }
       },
 
       signUp: async (name, email, password) => {

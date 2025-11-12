@@ -41,7 +41,9 @@ export const ApiSettings: React.FC = () => {
             const link = document.createElement("a");
             link.href = jsonString;
             link.download = `paradigm_backup_${new Date().toISOString()}.json`;
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
             setToast({ message: 'Data exported successfully!', type: 'success'});
         } catch (error) {
             setToast({ message: 'Failed to export data.', type: 'error'});
@@ -135,7 +137,7 @@ export const ApiSettings: React.FC = () => {
                          <div className="pt-4 border-t">
                             <h4 className="font-semibold text-primary-text mb-2">Backup & Export</h4>
                             <p className="text-sm text-muted mb-4">Download all data from the active data source (Mock Data).</p>
-                            <Button variant="outline" onClick={handleExport} isLoading={isExporting}>
+                            <Button type="button" variant="outline" onClick={handleExport} isLoading={isExporting}>
                                 <Download className="mr-2 h-4 w-4" /> Export All Data
                             </Button>
                         </div>

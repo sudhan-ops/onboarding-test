@@ -7,7 +7,7 @@ import type {
   SiteGentsUniformConfig, MasterGentsUniforms, SiteLadiesUniformConfig, MasterLadiesUniforms, UniformRequest,
   SiteUniformDetailsConfig, EnrollmentRules, InvoiceData, UserRole, UploadedFile, SalaryChangeRequest, SiteStaff,
   SubmissionCostBreakdown, AppModule, Role, SupportTicket, TicketPost, TicketComment, VerificationResult, CompOffLog,
-  ExtraWorkLog, PerfiosVerificationData, HolidayListItem, UniformRequestItem
+  ExtraWorkLog, PerfiosVerificationData, HolidayListItem, UniformRequestItem, IssuedTool
 } from '../types';
 // FIX: Add 'startOfMonth' and 'endOfMonth' to date-fns import to resolve errors.
 import { differenceInCalendarDays, format, startOfMonth, endOfMonth } from 'date-fns';

@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '../../services/api';
 import type { Organization, SiteConfiguration, Entity, ManpowerDetail, SiteStaffDesignation } from '../../types';
@@ -95,7 +97,7 @@ const QuickAddSiteModal: React.FC<{ isOpen: boolean; onClose: () => void; onSave
 };
 
 
-const SiteManagement: React.FC = () => {
+export const SiteManagement: React.FC = () => {
     const [organizations, setOrganizations] = useState<Organization[]>([]);
     const [siteConfigs, setSiteConfigs] = useState<SiteConfiguration[]>([]);
     const [allClients, setAllClients] = useState<(Entity & { companyName: string })[]>([]);
@@ -123,11 +125,16 @@ const SiteManagement: React.FC = () => {
         setIsLoading(true);
         try {
             const [orgsResult, structureResult, sitesResult, designationsResult] = await Promise.all([
-                api.getOrganizations(),
-                api.getOrganizationStructure(),
-                api.getSiteConfigurations(),
-                api.getSiteStaffDesignations(),
+                api.getOrganizations().catch(e => { console.error("Failed to fetch organizations:", e); return []; }),
+                api.getOrganizationStructure().catch(e => { console.error("Failed to fetch organization structure:", e); return []; }),
+                api.getSiteConfigurations().catch(e => { console.error("Failed to fetch site configurations:", e); return []; }),
+                api.getSiteStaffDesignations().catch(e => {
+                    console.error("Failed to fetch site staff designations:", e);
+                    setToast({ message: 'Could not load designation list. Manpower editing may be affected.', type: 'error' });
+                    return [];
+                }),
             ]);
+
             setOrganizations(orgsResult);
             setSiteConfigs(sitesResult);
             setSiteStaffDesignations(designationsResult);
@@ -138,7 +145,8 @@ const SiteManagement: React.FC = () => {
             );
             setAllClients(clients);
         } catch (error) {
-            setToast({ message: 'Failed to fetch data.', type: 'error' });
+             // This block will now only catch truly unexpected errors, not single API call failures.
+            setToast({ message: 'An unexpected error occurred while fetching data.', type: 'error' });
         } finally {
             setIsLoading(false);
         }
@@ -351,80 +359,4 @@ const SiteManagement: React.FC = () => {
 
             <div className="bg-card p-4 rounded-2xl mb-4">
                 <AdminPageHeader title="Site Management">
-                     <Button variant="outline" onClick={() => importRef.current?.click()}><Upload className="mr-2 h-4 w-4" /> Import Sites</Button>
-                     <Button variant="outline" onClick={handleExport}><Download className="mr-2 h-4 w-4" /> Export Sites</Button>
-                     {siteManagement.enableProvisionalSites ? (
-                        <Button onClick={() => setIsQuickAddOpen(true)}><Plus className="mr-2 h-4 w-4" /> Quick Add Site</Button>
-                     ) : (
-                        <Button onClick={() => setIsAddSiteModalOpen(true)}><Plus className="mr-2 h-4 w-4" /> Add Site</Button>
-                     )}
-                </AdminPageHeader>
-            </div>
-            
-            <div className="overflow-x-auto">
-                <table className="min-w-full responsive-table">
-                    <thead className="bg-page">
-                        <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted uppercase">Short Name</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted uppercase">Status</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted uppercase">Site ID</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted uppercase">Manpower Count</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted uppercase">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border md:bg-card md:divide-y-0">
-                        {isLoading ? (
-                            isMobile
-                                ? <tr><td colSpan={5}><TableSkeleton rows={3} cols={5} isMobile /></td></tr>
-                                : <TableSkeleton rows={5} cols={5} />
-                        ) : organizations.map((org) => {
-                            const config = siteConfigs.find(c => c.organizationId === org.id);
-                            
-                            let statusElement;
-                            if (org.provisionalCreationDate) {
-                                const creationDate = new Date(org.provisionalCreationDate);
-                                const daysLeft = 90 - differenceInDays(new Date(), creationDate);
-                                if (daysLeft < 0) {
-                                    statusElement = <span className="flex items-center text-red-600 text-xs font-semibold"><AlertCircle className="h-4 w-4 mr-1"/> Expired ({Math.abs(daysLeft)} days ago)</span>;
-                                } else {
-                                    statusElement = <span className="flex items-center text-yellow-600 text-xs font-semibold"><AlertCircle className="h-4 w-4 mr-1"/> Provisional ({daysLeft} days left)</span>;
-                                }
-                            } else {
-                                const isConfigured = !!config && (!!config.billingName || !!config.keyAccountManager);
-                                if (isConfigured) {
-                                    statusElement = <span className="flex items-center text-green-600 text-xs font-semibold"><CheckCircle className="h-4 w-4 mr-1"/> Complete</span>;
-                                } else {
-                                    statusElement = <span className="flex items-center text-orange-500 text-xs font-semibold"><AlertCircle className="h-4 w-4 mr-1"/> Incomplete</span>
-                                }
-                            }
-                            
-                            return (
-                                <tr key={org.id}>
-                                    <td data-label="Short Name" className="px-6 py-4 font-medium">{org.shortName}</td>
-                                    <td data-label="Status" className="px-6 py-4 text-sm">{statusElement}</td>
-                                    <td data-label="Site ID" className="px-6 py-4 text-sm text-muted">{org.id}</td>
-                                    <td data-label="Manpower Count" className="px-6 py-4 text-sm text-muted">{org.manpowerApprovedCount || 'N/A'}</td>
-                                    <td data-label="Actions" className="px-6 py-4">
-                                        <div className="flex items-center gap-2 flex-wrap md:justify-start justify-end">
-                                            <Button size="sm" variant="outline" onClick={() => handleViewDetails(org)}>
-                                                Manpower
-                                            </Button>
-                                            <Button size="sm" variant="outline" onClick={() => handleEdit(org)}>
-                                                Configure
-                                            </Button>
-                                            <Button variant="icon" size="sm" onClick={() => handleDelete(org)} title="Delete Site">
-                                                <Trash2 className="h-4 w-4 text-red-600" />
-                                            </Button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
-};
-
-export default SiteManagement;
+                     <Button variant="outline

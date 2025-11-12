@@ -1,2 +1,2 @@
-// The logo is now a URL. This may cause issues with PDF generation if the server doesn't have CORS headers.
-export const originalDefaultLogoBase64 = "https://paradigmfms.com/wp-content/uploads/2022/11/Paradigm-Logo-3-1024x157.png";
+// The logo is an embedded SVG data URI to prevent CORS issues during PDF generation.
+export const originalDefaultLogoBase64 = "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 550 60'%3e%3ctext x='0' y='45' style='font-family: %22Manrope%22, sans-serif; font-size: 48px; font-weight: 700; fill: %23005D22;'%3ePARADIGM SERVICES%3c/text%3e%3c/svg%3e";

@@ -56,7 +56,9 @@ const getLeaveValidationSchema = (threshold: number) => yup.object({
     startDate: yup.string().required('Start date is required'),
     endDate: yup.string().required('End date is required')
         .test('is-after-start', 'End date must be on or after start date', function(value) {
-            const { startDate } = this.parent;
+            // FIX: Cast `this.parent.startDate` to string to prevent a runtime error.
+            // In Yup, `this.parent` is of type `any` or `unknown`, so properties accessed on it are not type-safe.
+            const { startDate } = this.parent as { startDate?: string };
             if (!startDate || !value) return true;
             return new Date(value.replace(/-/g, '/')) >= new Date(startDate.replace(/-/g, '/'));
         }),
@@ -101,7 +103,9 @@ const LeaveRequestForm: React.FC<{
     const showHalfDayOption = isSingleDay && watchLeaveType === 'Earned';
     const showDoctorCertUpload = useMemo(() => {
         if (watchLeaveType !== 'Sick' || !watchStartDate || !watchEndDate) return false;
-        const duration = differenceInCalendarDays(new Date(watchEndDate.replace(/-/g, '/')), new Date(watchEndDate.replace(/-/g, '/'))) + 1;
+        // FIX: A typo was present where `watchEndDate` was used as both the start and end of the date range,
+        // which would always result in a duration of 1. It is now correctly using `watchStartDate`.
+        const duration = differenceInCalendarDays(new Date(watchEndDate.replace(/-/g, '/')), new Date(watchStartDate.replace(/-/g, '/'))) + 1;
         return duration > sickLeaveCertificateThreshold;
     }, [watchLeaveType, watchStartDate, watchEndDate, sickLeaveCertificateThreshold]);
 

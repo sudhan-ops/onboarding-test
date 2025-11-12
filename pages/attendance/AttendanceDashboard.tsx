@@ -4,7 +4,7 @@ import { api } from '../../services/api';
 import { useAuthStore } from '../../store/authStore';
 import { usePermissionsStore } from '../../store/permissionsStore';
 import type { AttendanceEvent, DailyAttendanceRecord, DailyAttendanceStatus, User, LeaveRequest, Holiday, AttendanceSettings, OnboardingData, Organization, UserRole } from '../../types';
-import { format, getDaysInMonth, addDays, startOfToday, endOfToday, startOfMonth, endOfMonth, startOfYear, endOfYear, subDays, eachDayOfInterval, differenceInHours, isSaturday, isSunday } from 'date-fns';
+import { format, getDaysInMonth, addDays, startOfToday, endOfToday, startOfMonth, endOfMonth, startOfYear, endOfYear, subDays, eachDayOfInterval, differenceInHours, differenceInMinutes, isSaturday, isSunday } from 'date-fns';
 import { Loader2, Download, Users, UserCheck, UserX, Clock, BarChart3, TrendingUp, Calendar } from 'lucide-react';
 import { DateRangePicker, type Range, type RangeKeyDict } from 'react-date-range';
 import Select from '../../components/ui/Select';
@@ -15,6 +15,7 @@ import Input from '../../components/ui/Input';
 import StatCard from '../../components/ui/StatCard';
 import Logo from '../../components/ui/Logo';
 import { useSettingsStore } from '../../store/settingsStore';
+import { useThemeStore } from '../../store/themeStore';
 import {
     Chart,
     BarController,
@@ -350,19 +351,19 @@ const AttendanceDashboard: React.FC = () => {
             {isReportModalOpen && <ReportModal allUsers={allUsers} onClose={() => setIsReportModalOpen(false)} initialDateRange={dateRange[0]} />}
             <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                 <h2 className="text-2xl font-bold text-primary-text">Attendance Dashboard</h2>
-                {canDownloadReport && <Button variant="outline" onClick={() => setIsReportModalOpen(true)}><Download className="mr-2 h-4 w-4" /> Download Report</Button>}
+                {canDownloadReport && <Button type="button" variant="outline" onClick={() => setIsReportModalOpen(true)}><Download className="mr-2 h-4 w-4" /> Download Report</Button>}
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="flex items-center gap-2 flex-wrap">
                     {['Today', 'This Month', 'This Year'].map(filter => (
-                        <Button key={filter} variant={activeDateFilter === filter ? 'primary' : 'secondary'} size="sm" onClick={() => handleSetDateFilter(filter)}>
+                        <Button key={filter} type="button" variant={activeDateFilter === filter ? 'primary' : 'secondary'} size="sm" onClick={() => handleSetDateFilter(filter)}>
                             {filter}
                         </Button>
                     ))}
                 </div>
                 <div className="relative" ref={datePickerRef}>
-                    <Button variant="outline" size="sm" onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}>
+                    <Button type="button" variant="outline" size="sm" onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}>
                         <Calendar className="mr-2 h-4 w-4" />
                         <span>
                             {activeDateFilter === 'Custom' ? `${format(dateRange[0].startDate!, 'dd MMM, yyyy')} - ${format(dateRange[0].endDate!, 'dd MMM, yyyy')}` : 'Custom Range'}
@@ -402,18 +403,16 @@ const AttendanceDashboard: React.FC = () => {
 };
 
 // --- Report Modal Component ---
-type ReportFormat = 'monthlyMuster' | 'attendanceLog';
-
-type MusterData = {
-    userId: string;
+type ReportFormat = 'basicReport' | 'attendanceLog';
+type BasicReportDataRow = {
+    date: string;
     userName: string;
-    dailyStatuses: { date: string, status: string }[];
-}[];
-
-const statusLegend: Record<string, string> = {
-  P: 'Present', A: 'Absent', L: 'Leave', HL: 'Half-day Leave',
-  HD: 'Half-day Present', SH: 'Short Hours', H: 'Holiday', WO: 'Week Off'
+    status: DailyAttendanceStatus | 'On Leave (Full)' | 'On Leave (Half)' | 'Short Hours';
+    checkIn: string | null;
+    checkOut: string | null;
+    duration: string | null;
 };
+
 
 const AttendanceLogPdfComponent: React.FC<{ data: (AttendanceEvent & { userName: string })[]; dateRange: Range }> = ({ data, dateRange }) => {
     return (
@@ -451,50 +450,42 @@ const AttendanceLogPdfComponent: React.FC<{ data: (AttendanceEvent & { userName:
     );
 };
 
-const MonthlyMusterPdfComponent: React.FC<{ data: MusterData; dateRange: Range }> = ({ data, dateRange }) => {
-    const days = eachDayOfInterval({ start: dateRange.startDate!, end: dateRange.endDate! });
-
+const BasicReportPdfComponent: React.FC<{ data: BasicReportDataRow[]; dateRange: Range }> = ({ data, dateRange }) => {
     return (
-        <div className="p-8 font-sans text-[8px] text-black bg-white">
+        <div className="p-8 font-sans text-[9px] text-black bg-white">
             <div className="flex justify-between items-center border-b pb-4 mb-4">
                 <Logo className="h-8" />
                 <div className="text-right">
-                    <h1 className="text-lg font-bold">Monthly Muster Report</h1>
+                    <h1 className="text-lg font-bold">Basic Attendance Report</h1>
                     <p className="text-gray-600">{format(dateRange.startDate!, 'dd MMM yyyy')} to {format(dateRange.endDate!, 'dd MMM yyyy')}</p>
                 </div>
             </div>
 
             <table className="w-full border-collapse border border-gray-400">
                 <thead>
-                    <tr className="bg-gray-100 font-bold">
-                        <td className="border p-1 border-gray-400 w-32">Employee Name</td>
-                        {days.map(day => <td key={day.toISOString()} className="border p-1 border-gray-400 text-center w-6">{format(day, 'dd')}</td>)}
+                    <tr className="bg-gray-200 font-bold">
+                        <td className="border p-1 border-gray-400">Employee Name</td>
+                        <td className="border p-1 border-gray-400">Date</td>
+                        <td className="border p-1 border-gray-400">Status</td>
+                        <td className="border p-1 border-gray-400">Check In</td>
+                        <td className="border p-1 border-gray-400">Check Out</td>
+                        <td className="border p-1 border-gray-400">Hours Worked</td>
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map(user => {
-                        const statusMap = new Map(user.dailyStatuses.map(ds => [ds.date, ds.status]));
-                        return (
-                            <tr key={user.userId}>
-                                <td className="border p-1 border-gray-400 font-semibold">{user.userName}</td>
-                                {days.map(day => {
-                                    const status = statusMap.get(format(day, 'yyyy-MM-dd')) || '-';
-                                    return <td key={day.toISOString()} className="border p-1 border-gray-400 text-center">{status}</td>
-                                })}
-                            </tr>
-                        );
-                    })}
+                    {data.map((row: BasicReportDataRow, index: number) => (
+                        <tr key={`${row.userName}-${row.date}-${index}`}>
+                            <td className="border p-1 border-gray-400">{row.userName}</td>
+                            {/* FIX: Cast row.date to string before calling replace to fix type error. */}
+                            <td className="border p-1 border-gray-400">{format(new Date(String(row.date).replace(/-/g, '/')), 'dd MMM, yyyy')}</td>
+                            <td className="border p-1 border-gray-400">{row.status}</td>
+                            <td className="border p-1 border-gray-400">{row.checkIn || '-'}</td>
+                            <td className="border p-1 border-gray-400">{row.checkOut || '-'}</td>
+                            <td className="border p-1 border-gray-400">{row.duration || '-'}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
-
-            <div className="mt-4 text-[9px]">
-                <h4 className="font-bold mb-1">Legend:</h4>
-                <div className="grid grid-cols-4 gap-x-4 gap-y-1">
-                    {Object.entries(statusLegend).map(([code, description]) => (
-                        <div key={code}><span className="font-bold">{code}</span>: {description}</div>
-                    ))}
-                </div>
-            </div>
         </div>
     );
 };
@@ -504,8 +495,9 @@ const ReportModal: React.FC<{
     onClose: () => void;
     initialDateRange: Range;
 }> = ({ allUsers, onClose, initialDateRange }) => {
+    const { theme } = useThemeStore();
     const [reportUser, setReportUser] = useState<string>('all');
-    const [reportFormat, setReportFormat] = useState<ReportFormat>('monthlyMuster');
+    const [reportFormat, setReportFormat] = useState<ReportFormat>('basicReport');
     const [isGenerating, setIsGenerating] = useState(false);
     const [generationStatus, setGenerationStatus] = useState('');
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -513,11 +505,11 @@ const ReportModal: React.FC<{
     const [pdfContent, setPdfContent] = useState<React.ReactElement | null>(null);
     const pdfRef = useRef<HTMLDivElement>(null);
 
-    const generateClientSideMusterData = useCallback(async (
+    const generateClientSideBasicReportData = useCallback(async (
         usersToReport: User[],
         startDate: Date,
         endDate: Date
-    ): Promise<MusterData> => {
+    ): Promise<BasicReportDataRow[]> => {
         const { attendance: attendanceSettings, officeHolidays, fieldHolidays } = useSettingsStore.getState();
 
         const [allEvents, allLeaves] = await Promise.all([
@@ -544,10 +536,9 @@ const ReportModal: React.FC<{
         const getStaffType = (role: UserRole): 'office' | 'field' => 
             (['admin', 'hr', 'finance'].includes(role) ? 'office' : 'field');
 
-        const musterData: MusterData = [];
+        const reportData: BasicReportDataRow[] = [];
 
         for (const user of usersToReport) {
-            const dailyStatuses: { date: string, status: string }[] = [];
             const staffType = getStaffType(user.role);
             const userHolidays = staffType === 'office' ? officeHolidays : fieldHolidays;
             const userHolidayDates = new Set(userHolidays.map(h => h.date));
@@ -557,43 +548,55 @@ const ReportModal: React.FC<{
             for (const day of intervalDays) {
                 const dayString = format(day, 'yyyy-MM-dd');
                 const onLeave = (leavesByUser[user.id] || []).find(l => dayString >= l.startDate && dayString <= l.endDate);
-                if (onLeave) {
-                    dailyStatuses.push({ date: dayString, status: onLeave.dayOption === 'half' ? 'HL' : 'L' });
-                    continue;
-                }
-                if (userHolidayDates.has(dayString)) {
-                    dailyStatuses.push({ date: dayString, status: 'H' });
-                    continue;
-                }
-                if (isSunday(day) || isSaturday(day)) {
-                     dailyStatuses.push({ date: dayString, status: 'WO' });
-                     continue;
-                }
                 const eventsForDay = (eventsByUser[user.id] || []).filter(e => format(new Date(e.timestamp), 'yyyy-MM-dd') === dayString);
-                if (eventsForDay.length > 0) {
+
+                let status: BasicReportDataRow['status'] = 'Absent';
+                let checkIn: string | null = null;
+                let checkOut: string | null = null;
+                let duration: string | null = null;
+                
+                if (onLeave) {
+                    status = onLeave.dayOption === 'half' ? 'On Leave (Half)' : 'On Leave (Full)';
+                } else if (userHolidayDates.has(dayString)) {
+                    status = 'Holiday';
+                } else if (isSunday(day) || isSaturday(day)) {
+                     status = 'Weekend';
+                } else if (eventsForDay.length > 0) {
                     const checkIns = eventsForDay.filter(e => e.type === 'check-in').sort((a,b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
                     const checkOuts = eventsForDay.filter(e => e.type === 'check-out').sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
                     const firstCheckIn = checkIns[0];
                     const lastCheckOut = checkOuts[0];
                     
+                    if(firstCheckIn) checkIn = format(new Date(firstCheckIn.timestamp), 'HH:mm');
+
                     if (firstCheckIn && lastCheckOut) {
-                        const workHours = differenceInHours(new Date(lastCheckOut.timestamp), new Date(firstCheckIn.timestamp));
-                        if (workHours >= userRules.minimumHoursFullDay) dailyStatuses.push({ date: dayString, status: 'P' });
-                        else if (workHours >= userRules.minimumHoursHalfDay) dailyStatuses.push({ date: dayString, status: 'HD' });
-                        else dailyStatuses.push({ date: dayString, status: 'SH' });
+                        checkOut = format(new Date(lastCheckOut.timestamp), 'HH:mm');
+                        const diffMinutes = differenceInMinutes(new Date(lastCheckOut.timestamp), new Date(firstCheckIn.timestamp));
+                        const workHours = diffMinutes / 60.0;
+                        const hours = Math.floor(diffMinutes / 60);
+                        const minutes = diffMinutes % 60;
+                        duration = `${hours}h ${minutes}m`;
+
+                        if (workHours >= userRules.minimumHoursFullDay) status = 'Present';
+                        else if (workHours >= userRules.minimumHoursHalfDay) status = 'Half Day';
+                        else status = 'Short Hours';
                     } else if (firstCheckIn) {
-                        if (day < startOfToday()) dailyStatuses.push({ date: dayString, status: 'A' });
-                        else dailyStatuses.push({ date: dayString, status: 'P' }); // Incomplete today
+                        if (day < startOfToday()) {
+                            status = 'Absent'; // Incomplete from a past day is Absent
+                        } else {
+                            status = 'Incomplete'; // Still present today
+                        }
                     } else {
-                        dailyStatuses.push({ date: dayString, status: 'A' });
+                        status = 'Absent';
                     }
                 } else {
-                    dailyStatuses.push({ date: dayString, status: 'A' });
+                    status = 'Absent';
                 }
+
+                reportData.push({ date: dayString, userName: user.name, status, checkIn, checkOut, duration });
             }
-            musterData.push({ userId: user.id, userName: user.name, dailyStatuses });
         }
-        return musterData;
+        return reportData;
     }, []);
 
     useEffect(() => {
@@ -606,178 +609,151 @@ const ReportModal: React.FC<{
                 html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' as const }
             };
-            html2pdf().from(element).set(opt).save().then(() => {
-                setPdfContent(null);
-                setIsGenerating(false);
-                setGenerationStatus('');
-            });
+            html2pdf().from(element).set(opt).save();
         }
     }, [pdfContent]);
 
-    useEffect(() => {
-        let interval: number;
-        if (isGenerating) {
-            const statuses = ["Fetching data...", "Processing records...", "Compiling report...", "Almost there..."];
-            let statusIndex = 0;
-            setGenerationStatus(statuses[statusIndex]);
-            interval = window.setInterval(() => {
-                statusIndex = (statusIndex + 1) % statuses.length;
-                setGenerationStatus(statuses[statusIndex]);
-            }, 1500);
-        }
-        return () => {
-            if (interval) clearInterval(interval);
-        };
-    }, [isGenerating]);
-
-    const handleGenerate = async (formatType: 'csv' | 'pdf') => {
-        setGenerationStatus('Preparing report...');
+    const handleGenerate = async () => {
         setIsGenerating(true);
         setReportError('');
+        setPdfContent(null);
         
-        const usersToFetch = reportUser === 'all'
-            ? allUsers
-            : allUsers.filter(u => u.id === reportUser);
-        
-        if (usersToFetch.length === 0) {
-            setReportError('No user selected or found.');
-            setIsGenerating(false);
-            return;
-        }
-
-        if (!initialDateRange.startDate || !initialDateRange.endDate) {
-            setReportError('Invalid date range selected.');
-            setIsGenerating(false);
-            return;
-        }
-
         try {
+            const usersToReport = reportUser === 'all' ? allUsers : allUsers.filter(u => u.id === reportUser);
+            if (usersToReport.length === 0) throw new Error("No users selected for the report.");
+
             if (reportFormat === 'attendanceLog') {
-                const userMap = new Map(allUsers.map(u => [u.id, u.name]));
-                const userIdsToFetch = new Set(usersToFetch.map(u => u.id));
-
-                const allEventsInRange = await api.getAllAttendanceEvents(initialDateRange.startDate!.toISOString(), initialDateRange.endDate!.toISOString());
-
-                const allEvents = allEventsInRange
-                    .filter(event => userIdsToFetch.has(event.userId))
-                    .map(event => ({
-                        ...event,
-                        userName: userMap.get(event.userId) || 'Unknown User'
-                    }))
-                    .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-
-                if (allEvents.length === 0) throw new Error('No attendance data found for the selected criteria.');
-
-                if (formatType === 'csv') {
-                    const headers = ['User Name', 'Date', 'Time', 'Event Type', 'Location (Lat, Lng)'];
-                    const rows = allEvents.map(e => [`"${e.userName.replace(/"/g, '""')}"`, format(new Date(e.timestamp), 'yyyy-MM-dd'), format(new Date(e.timestamp), 'HH:mm:ss'), e.type, e.latitude ? `${e.latitude},${e.longitude}` : ''].join(','));
-                    const csvContent = [headers.join(','), ...rows].join('\n');
-                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.setAttribute('download', 'attendance_log.csv');
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    setIsGenerating(false);
-                } else { // PDF
-                    setPdfContent(<AttendanceLogPdfComponent data={allEvents} dateRange={initialDateRange} />);
-                }
-
-            } else if (reportFormat === 'monthlyMuster') {
-                const musterData: MusterData = await generateClientSideMusterData(usersToFetch, initialDateRange.startDate, initialDateRange.endDate);
-
-                if (musterData.length === 0) throw new Error('Could not generate muster data.');
+                setGenerationStatus('Fetching event logs...');
+                const allEvents = await api.getAllAttendanceEvents(initialDateRange.startDate!.toISOString(), initialDateRange.endDate!.toISOString());
+                const eventsToReport = allEvents
+                    .filter(e => reportUser === 'all' || e.userId === reportUser)
+                    .map(e => ({...e, userName: allUsers.find(u => u.id === e.userId)?.name || 'Unknown'}));
                 
-                if (formatType === 'csv') {
-                    const days = eachDayOfInterval({ start: initialDateRange.startDate, end: initialDateRange.endDate });
-                    const headers = ['Employee Name', ...days.map(d => format(d, 'dd-MMM'))];
-                    
-                    const rows = musterData.map(user => {
-                        const statusMap = new Map(user.dailyStatuses.map(ds => [ds.date, ds.status]));
-                        const row = [`"${user.userName}"`];
-                        days.forEach(day => {
-                            row.push(statusMap.get(format(day, 'yyyy-MM-dd')) || '-');
-                        });
-                        return row.join(',');
-                    });
-                    
-                    const csvContent = [headers.join(','), ...rows].join('\n');
-                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.setAttribute('download', 'monthly_muster.csv');
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    setIsGenerating(false);
+                setGenerationStatus('Preparing document...');
+                setPdfContent(<AttendanceLogPdfComponent data={eventsToReport} dateRange={initialDateRange} />);
 
-                } else { // PDF
-                     setPdfContent(<MonthlyMusterPdfComponent data={musterData} dateRange={initialDateRange} />);
-                }
+            } else { // basicReport
+                setGenerationStatus('Calculating daily statuses...');
+                const reportData = await generateClientSideBasicReportData(usersToReport, initialDateRange.startDate!, initialDateRange.endDate!);
+                
+                setGenerationStatus('Preparing document...');
+                setPdfContent(<BasicReportPdfComponent data={reportData} dateRange={initialDateRange} />);
             }
 
-        } catch (err: any) {
-            setReportError(err.message || 'An error occurred while generating the report.');
+        } catch (error: any) {
+            setReportError(error.message || 'An unexpected error occurred.');
+        } finally {
             setIsGenerating(false);
-            console.error(err);
         }
     };
+    
+    const handleDownloadPdf = () => {
+        const element = pdfRef.current;
+        if (element) {
+            const opt = {
+                margin: 0.5,
+                filename: `Attendance_Report_${format(new Date(), 'yyyy-MM-dd')}.pdf`,
+                image: { type: 'jpeg' as const, quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' as const }
+            };
+            html2pdf().from(element).set(opt).outputPdf('bloburl').then((pdfBlobUrl) => {
+                const link = document.createElement('a');
+                link.href = pdfBlobUrl;
+                link.download = opt.filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        }
+    };
+    
+    const handleDownloadCsv = () => {
+        if (!pdfContent) return;
 
-    const handleGenerateCsv = () => handleGenerate('csv');
-    const handleGeneratePdf = () => handleGenerate('pdf');
+        let dataToExport, columns;
+        if (reportFormat === 'basicReport') {
+            dataToExport = (pdfContent.props.data as BasicReportDataRow[]).map(row => ({
+                Date: format(new Date(String(row.date).replace(/-/g, '/')), 'dd-MM-yyyy'),
+                'Employee Name': row.userName,
+                Status: row.status,
+                'Check In': row.checkIn || '',
+                'Check Out': row.checkOut || '',
+                'Hours Worked': row.duration || '',
+            }));
+            columns = ['Date', 'Employee Name', 'Status', 'Check In', 'Check Out', 'Hours Worked'];
+        } else { // attendanceLog
+            dataToExport = (pdfContent.props.data as (AttendanceEvent & { userName: string })[]).map(event => ({
+                User: event.userName,
+                Date: format(new Date(event.timestamp), 'dd-MM-yyyy'),
+                Time: format(new Date(event.timestamp), 'HH:mm:ss'),
+                Event: event.type,
+                Location: event.latitude ? `${event.latitude}, ${event.longitude}` : '',
+            }));
+            columns = ['User', 'Date', 'Time', 'Event', 'Location'];
+        }
+
+        const header = columns.join(',');
+        const rows = dataToExport.map(row => 
+            columns.map(col => {
+                const val = row[col as keyof typeof row] || '';
+                const strVal = String(val);
+                if (strVal.includes(',')) return `"${strVal}"`;
+                return strVal;
+            }).join(',')
+        );
+        const csvData = [header, ...rows].join('\n');
+
+        const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'attendance_report.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
 
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60" onClick={onClose}>
-        {toast && <Toast message={toast.message} type={toast.type} onDismiss={() => setToast(null)} />}
-        <div style={{ position: 'absolute', left: '-9999px', top: 0, width: '11in' }}><div ref={pdfRef}>{pdfContent}</div></div>
-        
-        <div className="bg-card rounded-xl shadow-card p-6 w-full max-w-lg m-4 animate-fade-in-scale" onClick={e => e.stopPropagation()}>
-            {isGenerating ? (
-                <div className="flex flex-col items-center justify-center h-64">
-                    <div className="p-4 rounded-full bg-accent-light animate-pulse-bg">
-                        <Loader2 className="h-10 w-10 animate-spin text-accent" />
-                    </div>
-                    <p className="mt-4 text-lg font-semibold text-primary-text">Generating Report</p>
-                    <p className="text-muted">{generationStatus}</p>
-                </div>
-            ) : (
-            <>
-                <h3 className="text-lg font-bold text-primary-text mb-4">Generate Attendance Report</h3>
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
+            <div className={`bg-card rounded-xl shadow-card p-6 w-full max-w-lg m-4 animate-fade-in-scale ${theme === 'dark' ? 'pro-dark-theme' : ''}`} onClick={e => e.stopPropagation()}>
+                <h3 className="text-lg font-bold text-primary-text mb-4">Download Attendance Report</h3>
                 <div className="space-y-4">
-                    <div className="p-3 bg-page rounded-lg text-center">
-                        <p className="text-sm font-medium text-muted">Report Period</p>
-                        <p className="font-semibold text-primary-text">
-                            {initialDateRange.startDate && format(initialDateRange.startDate, 'dd MMM, yyyy')} - {initialDateRange.endDate && format(initialDateRange.endDate, 'dd MMM, yyyy')}
-                        </p>
-                    </div>
-
-                    <Select label="Employee" id="report-user" value={reportUser} onChange={e => setReportUser(e.target.value)}>
-                        <option value="all">All Employees</option>
+                    <p className="text-sm text-muted">
+                        Report will be generated for the currently selected date range: <strong>{format(initialDateRange.startDate!, 'dd MMM')} - {format(initialDateRange.endDate!, 'dd MMM')}</strong>.
+                    </p>
+                    <Select label="Select User(s)" id="report-user" value={reportUser} onChange={e => setReportUser(e.target.value)}>
+                        <option value="all">All Users</option>
                         {allUsers.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
                     </Select>
+                     <Select label="Report Format" id="report-format" value={reportFormat} onChange={e => setReportFormat(e.target.value as ReportFormat)}>
+                        <option value="basicReport">Basic Daily Report</option>
+                        <option value="attendanceLog">Detailed Attendance Log</option>
+                    </Select>
+                </div>
+                {isGenerating && <div className="mt-4 text-sm text-muted flex items-center"><Loader2 className="h-4 w-4 animate-spin mr-2"/> {generationStatus}</div>}
+                {reportError && <div className="mt-4 text-sm text-red-500">{reportError}</div>}
+                <div className="mt-6 flex justify-between items-center">
                     <div>
-                        <label className="block text-sm font-medium text-muted mb-1">Report Format</label>
-                        <div className="flex gap-2 p-1 bg-page rounded-lg">
-                            {(['monthlyMuster', 'attendanceLog'] as ReportFormat[]).map(type => (
-                                <button key={type} onClick={() => setReportFormat(type)} className={`flex-1 px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${reportFormat === type ? 'bg-card shadow-sm' : 'hover:bg-card/50'}`}>
-                                    {type === 'monthlyMuster' ? 'Monthly Muster' : 'Attendance Log'}
-                                </button>
-                            ))}
-                        </div>
+                        {pdfContent && (
+                             <div className="flex gap-2">
+                                <Button onClick={handleDownloadPdf} variant="outline" size="sm">Download PDF</Button>
+                                <Button onClick={handleDownloadCsv} variant="outline" size="sm">Download CSV</Button>
+                            </div>
+                        )}
                     </div>
-                    {reportError && <p className="text-sm text-red-600">{reportError}</p>}
+                    <div className="flex gap-3">
+                        <Button onClick={onClose} variant="secondary">Cancel</Button>
+                        <Button onClick={handleGenerate} isLoading={isGenerating}>Generate</Button>
+                    </div>
                 </div>
-                <div className="flex justify-end gap-3 pt-6 mt-4 border-t">
-                    <Button variant="secondary" onClick={onClose}>Cancel</Button>
-                    <Button onClick={handleGenerateCsv}>Generate CSV</Button>
-                    <Button onClick={handleGeneratePdf}>Generate PDF</Button>
-                </div>
-            </>
-            )}
+                {/* Hidden div for PDF generation */}
+                <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}><div ref={pdfRef}>{pdfContent}</div></div>
+            </div>
         </div>
-      </div>
     );
 };
+
 
 export default AttendanceDashboard;

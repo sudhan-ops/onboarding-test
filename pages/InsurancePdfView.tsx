@@ -19,7 +19,14 @@ const PdfExportButton: React.FC<{ elementRef: React.RefObject<HTMLDivElement>, f
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' as const }
             };
-            html2pdf().from(element).set(opt).save();
+            html2pdf().from(element).set(opt).outputPdf('bloburl').then(pdfBlobUrl => {
+                const link = document.createElement('a');
+                link.href = pdfBlobUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
         }
     };
 

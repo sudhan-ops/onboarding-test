@@ -10,8 +10,7 @@ import { useLogoStore } from '../../store/logoStore';
 import { format } from 'date-fns';
 
 const OnboardingPdfOutput: React.FC = () => {
-    // Fix: Removed generic type argument from useParams() to avoid untyped function call error.
-    const { id } = useParams();
+    const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const [employeeData, setEmployeeData] = useState<OnboardingData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +37,7 @@ const OnboardingPdfOutput: React.FC = () => {
     
     const handleExport = () => {
         const element = pdfRef.current;
-        if (element) {
+        if (element && employeeData) {
             const opt = {
                 margin:       0,
                 filename:     `Onboarding_Forms_${employeeData?.personal.employeeId}.pdf`,
@@ -46,7 +45,14 @@ const OnboardingPdfOutput: React.FC = () => {
                 html2canvas:  { scale: 2, useCORS: true },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' as const }
             };
-            html2pdf().from(element).set(opt).save();
+            html2pdf().from(element).set(opt).outputPdf('bloburl').then((pdfBlobUrl) => {
+                const link = document.createElement('a');
+                link.href = pdfBlobUrl;
+                link.download = opt.filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
         }
     };
 
@@ -69,14 +75,14 @@ const OnboardingPdfOutput: React.FC = () => {
             <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
                  <div className="bg-card p-4 rounded-xl shadow-card no-print mb-8 sticky top-4 z-10">
                      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                         <Button onClick={() => navigate(-1)} variant="secondary"><ArrowLeft className="mr-2 h-4 w-4"/> Go Back</Button>
+                         <Button type="button" onClick={() => navigate(-1)} variant="secondary"><ArrowLeft className="mr-2 h-4 w-4"/> Go Back</Button>
                          <div className="text-center">
                              <h2 className="font-bold text-lg">Review Official Forms</h2>
                              <p className="text-sm text-muted">Please confirm these details before submitting.</p>
                          </div>
                          <div className="flex items-center gap-2">
-                            <Button onClick={handleExport} variant="outline"><Download className="mr-2 h-4 w-4" /> Download</Button>
-                            <Button onClick={handleConfirm}>Confirm & Continue</Button>
+                            <Button type="button" onClick={handleExport} variant="outline"><Download className="mr-2 h-4 w-4" /> Download</Button>
+                            <Button type="button" onClick={handleConfirm}>Confirm & Continue</Button>
                          </div>
                      </div>
                  </div>
