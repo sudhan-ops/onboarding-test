@@ -1,0 +1,6 @@
+[
+  { "id": "leave_1", "userId": "user_fo_1", "userName": "Field Officer Kumar", "leaveType": "Earned", "startDate": "2024-08-05", "endDate": "2024-08-05", "reason": "Personal work at home.", "status": "pending_manager_approval", "currentApproverId": "user_site_1", "approvalHistory": [] },
+  { "id": "leave_2", "userId": "user_site_1", "userName": "Anjali Site Manager", "leaveType": "Sick", "startDate": "2024-07-25", "endDate": "2024-07-26", "reason": "Fever and cold.", "status": "approved", "currentApproverId": null, "approvalHistory": [] },
+  { "id": "leave_3", "userId": "user_fo_2", "userName": "Field Officer Singh", "leaveType": "Earned", "startDate": "2024-08-10", "endDate": "2024-08-12", "reason": "Family function out of station.", "status": "pending_hr_confirmation", "currentApproverId": "user_hr_1", "approvalHistory": [] },
+  { "id": "leave_4", "userId": "user_fo_1", "userName": "Field Officer Kumar", "leaveType": "Sick", "startDate": "2024-07-20", "endDate": "2024-07-20", "reason": "Stomach upset.", "status": "rejected", "currentApproverId": null, "approvalHistory": [] }
+]

@@ -1,0 +1,204 @@
+{
+  "designations": [
+    {
+      "id": "ssd_admin1_1",
+      "department": "ADMINISTRATION LEVEL 1",
+      "designation": "General Manager",
+      "permanentId": "ADM1-01",
+      "temporaryId": "T-ADM1-01",
+      "monthlySalary": 120000
+    },
+    {
+      "id": "ssd_admin1_2",
+      "department": "ADMINISTRATION LEVEL 1",
+      "designation": "Facility Manager",
+      "permanentId": "ADM1-02",
+      "temporaryId": "T-ADM1-02",
+      "monthlySalary": 85000
+    },
+    {
+      "id": "ssd_admin1_3",
+      "department": "ADMINISTRATION LEVEL 1",
+      "designation": "Estate Manager",
+      "permanentId": "ADM1-03",
+      "temporaryId": "T-ADM1-03",
+      "monthlySalary": 75000
+    },
+    {
+      "id": "ssd_admin1_4",
+      "department": "ADMINISTRATION LEVEL 1",
+      "designation": "Assistant Facility Manager",
+      "permanentId": "ADM1-04",
+      "temporaryId": "T-ADM1-04",
+      "monthlySalary": 55000
+    },
+    {
+      "id": "ssd_admin2_1",
+      "department": "ADMINISTRATION LEVEL 2",
+      "designation": "Facility Executive",
+      "permanentId": "ADM2-01",
+      "temporaryId": "T-ADM2-01",
+      "monthlySalary": 35000
+    },
+    {
+      "id": "ssd_admin2_2",
+      "department": "ADMINISTRATION LEVEL 2",
+      "designation": "Help Desk Male",
+      "permanentId": "ADM2-02",
+      "temporaryId": "T-ADM2-02",
+      "monthlySalary": 22000
+    },
+    {
+      "id": "ssd_admin2_3",
+      "department": "ADMINISTRATION LEVEL 2",
+      "designation": "Help Desk Female",
+      "permanentId": "ADM2-03",
+      "temporaryId": "T-ADM2-03",
+      "monthlySalary": 22000
+    },
+    {
+      "id": "ssd_elec_1",
+      "department": "ELECTRICAL DEPT",
+      "designation": "Electrical Supervisor",
+      "permanentId": "ELEC-01",
+      "temporaryId": "T-ELEC-01",
+      "monthlySalary": 38000
+    },
+    {
+      "id": "ssd_elec_2",
+      "department": "ELECTRICAL DEPT",
+      "designation": "Senior Electrician",
+      "permanentId": "ELEC-02",
+      "temporaryId": "T-ELEC-02",
+      "monthlySalary": 28000
+    },
+    {
+      "id": "ssd_elec_3",
+      "department": "ELECTRICAL DEPT",
+      "designation": "Electrician",
+      "permanentId": "ELEC-03",
+      "temporaryId": "T-ELEC-03",
+      "monthlySalary": 24000
+    },
+    {
+      "id": "ssd_elec_4",
+      "department": "ELECTRICAL DEPT",
+      "designation": "DG Operator",
+      "permanentId": "ELEC-04",
+      "temporaryId": "T-ELEC-04",
+      "monthlySalary": 25000
+    },
+    {
+      "id": "ssd_plumb_1",
+      "department": "PLUMBING DEPT",
+      "designation": "Plumbing Supervisor",
+      "permanentId": "PLUM-01",
+      "temporaryId": "T-PLUM-01",
+      "monthlySalary": 35000
+    },
+    {
+      "id": "ssd_plumb_2",
+      "department": "PLUMBING DEPT",
+      "designation": "Senior Plumber",
+      "permanentId": "PLUM-02",
+      "temporaryId": "T-PLUM-02",
+      "monthlySalary": 27000
+    },
+    {
+      "id": "ssd_plumb_3",
+      "department": "PLUMBING DEPT",
+      "designation": "Plumber",
+      "permanentId": "PLUM-03",
+      "temporaryId": "T-PLUM-03",
+      "monthlySalary": 22000
+    },
+    {
+      "id": "ssd_stp_1",
+      "department": "STP WTP",
+      "designation": "STP Supervisor",
+      "permanentId": "STP-01",
+      "temporaryId": "T-STP-01",
+      "monthlySalary": 32000
+    },
+    {
+      "id": "ssd_stp_2",
+      "department": "STP WTP",
+      "designation": "STP Operator",
+      "permanentId": "STP-02",
+      "temporaryId": "T-STP-02",
+      "monthlySalary": 24000
+    },
+    {
+      "id": "ssd_stp_3",
+      "department": "STP WTP",
+      "designation": "WTP Operator",
+      "permanentId": "STP-03",
+      "temporaryId": "T-STP-03",
+      "monthlySalary": 23000
+    },
+    {
+      "id": "ssd_hk_1",
+      "department": "HK SERVICES",
+      "designation": "HK Supervisor - Senior",
+      "permanentId": "HK-01",
+      "temporaryId": "T-HK-01",
+      "monthlySalary": 28000
+    },
+    {
+      "id": "ssd_hk_2",
+      "department": "HK SERVICES",
+      "designation": "HK Supervisor",
+      "permanentId": "HK-02",
+      "temporaryId": "T-HK-02",
+      "monthlySalary": 24000
+    },
+    {
+      "id": "ssd_hk_3",
+      "department": "HK SERVICES",
+      "designation": "HK Cleaner",
+      "permanentId": "HK-03",
+      "temporaryId": "T-HK-03",
+      "monthlySalary": 18000
+    },
+    {
+      "id": "ssd_hk_4",
+      "department": "HK SERVICES",
+      "designation": "Pantry Boy",
+      "permanentId": "HK-04",
+      "temporaryId": "T-HK-04",
+      "monthlySalary": 17000
+    },
+    {
+      "id": "ssd_sec_1",
+      "department": "SECURITY SERVICES",
+      "designation": "Chief Security Officer",
+      "permanentId": "SEC-01",
+      "temporaryId": "T-SEC-01",
+      "monthlySalary": 50000
+    },
+    {
+      "id": "ssd_sec_2",
+      "department": "SECURITY SERVICES",
+      "designation": "Security Supervisor",
+      "permanentId": "SEC-02",
+      "temporaryId": "T-SEC-02",
+      "monthlySalary": 30000
+    },
+    {
+      "id": "ssd_sec_3",
+      "department": "SECURITY SERVICES",
+      "designation": "Security Guard",
+      "permanentId": "SEC-03",
+      "temporaryId": "T-SEC-03",
+      "monthlySalary": 21000
+    },
+    {
+      "id": "ssd_sec_4",
+      "department": "SECURITY SERVICES",
+      "designation": "Lady Guard",
+      "permanentId": "SEC-04",
+      "temporaryId": "T-SEC-04",
+      "monthlySalary": 21000
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+
+[
+  {
+    "id": "admin",
+    "displayName": "Admin"
+  },
+  {
+    "id": "hr",
+    "displayName": "HR"
+  },
+  {
+    "id": "finance",
+    "displayName": "Finance"
+  },
+  {
+    "id": "developer",
+    "displayName": "Developer"
+  },
+  {
+    "id": "operation_manager",
+    "displayName": "Operation Manager"
+  },
+  {
+    "id": "site_manager",
+    "displayName": "Site Manager"
+  },
+  {
+    "id": "field_officer",
+    "displayName": "Field Officer"
+  }
+]

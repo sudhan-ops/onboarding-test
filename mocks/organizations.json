@@ -1,0 +1,38 @@
+[
+  {
+    "id": "SITE-TATA",
+    "shortName": "TATA Power",
+    "fullName": "TATA Power Solar Systems Ltd.",
+    "address": "78, Electronics City, Hosur Road, Bengaluru, Karnataka 560100"
+  },
+  {
+    "id": "SITE-AISSHWARYA",
+    "shortName": "Aisshwarya Excellency",
+    "fullName": "Aisshwarya Excellency Apartments",
+    "address": "Gunjur Village, Varthur, Bengaluru, Karnataka 560087"
+  },
+  {
+    "id": "SITE-INFY",
+    "shortName": "Infosys Ltd",
+    "fullName": "Infosys Limited",
+    "address": "Electronics City, Hosur Road, Bengaluru, Karnataka 560100"
+  },
+  {
+    "id": "SITE-RMZ",
+    "shortName": "RMZ Ecospace",
+    "fullName": "RMZ Ecospace Business Park",
+    "address": "Outer Ring Road, Bellandur, Bengaluru, Karnataka 560103"
+  },
+  {
+    "id": "SITE-PRESTIGE",
+    "shortName": "Prestige Tech Park",
+    "fullName": "Prestige Tech Park",
+    "address": "Marathahalli - Sarjapur Outer Ring Road, Kadubeesanahalli, Bengaluru, Karnataka 560103"
+  },
+  {
+    "id": "SITE-EMBASSY",
+    "shortName": "Embassy Manyata",
+    "fullName": "Embassy Manyata Business Park",
+    "address": "Outer Ring Road, Nagavara, Bengaluru, Karnataka 560045"
+  }
+]

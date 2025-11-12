@@ -1,0 +1,18 @@
+{
+  "pants": [
+    { "id": "lp_28_sf", "size": "28", "length": 38, "waist": 28, "hip": 34, "fit": "Slim Fit" },
+    { "id": "lp_28_rf", "size": "28", "length": 38, "waist": 28, "hip": 36, "fit": "Regular Fit" },
+    { "id": "lp_30_sf", "size": "30", "length": 39, "waist": 30, "hip": 36, "fit": "Slim Fit" },
+    { "id": "lp_30_rf", "size": "30", "length": 39, "waist": 30, "hip": 38, "fit": "Regular Fit" },
+    { "id": "lp_32_sf", "size": "32", "length": 40, "waist": 32, "hip": 38, "fit": "Slim Fit" },
+    { "id": "lp_32_rf", "size": "32", "length": 40, "waist": 32, "hip": 40, "fit": "Regular Fit" }
+  ],
+  "shirts": [
+    { "id": "ls_s_sf", "size": "S", "length": 24, "sleeves": 22, "bust": 34, "shoulder": 14.5, "fit": "Slim Fit" },
+    { "id": "ls_s_rf", "size": "S", "length": 24, "sleeves": 22, "bust": 36, "shoulder": 15, "fit": "Regular Fit" },
+    { "id": "ls_m_sf", "size": "M", "length": 25, "sleeves": 23, "bust": 36, "shoulder": 15, "fit": "Slim Fit" },
+    { "id": "ls_m_rf", "size": "M", "length": 25, "sleeves": 23, "bust": 38, "shoulder": 15.5, "fit": "Regular Fit" },
+    { "id": "ls_l_sf", "size": "L", "length": 26, "sleeves": 24, "bust": 38, "shoulder": 15.5, "fit": "Slim Fit" },
+    { "id": "ls_l_rf", "size": "L", "length": 26, "sleeves": 24, "bust": 40, "shoulder": 16, "fit": "Regular Fit" }
+  ]
+}

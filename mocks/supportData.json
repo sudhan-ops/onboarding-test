@@ -1,0 +1,112 @@
+
+[
+    {
+      "id": "ticket_1",
+      "ticketNumber": "TICKET-202407-001",
+      "title": "Unable to mark attendance",
+      "description": "The 'Slide to Check In' button is not responding on my device. I have tried restarting the app but the issue persists. My device is a Samsung Galaxy S21.",
+      "category": "Technical",
+      "priority": "High",
+      "status": "In Progress",
+      "raisedById": "user_fo_1",
+      "raisedByName": "Field Officer Kumar",
+      "raisedAt": "2024-07-30T09:15:00Z",
+      "assignedToId": "user_dev_1",
+      "assignedToName": "Dev Team",
+      "resolvedAt": null,
+      "closedAt": null,
+      "rating": null,
+      "feedback": null,
+      "posts": [
+        {
+          "id": "post_1",
+          "ticketId": "ticket_1",
+          "authorId": "user_dev_1",
+          "authorName": "Dev Team",
+          "authorRole": "developer",
+          "content": "Thanks for reporting. We are looking into this. Can you confirm your app version number?",
+          "createdAt": "2024-07-30T09:30:00Z",
+          "likes": ["user_hr_1"],
+          "comments": [
+            {
+              "id": "comment_1",
+              "postId": "post_1",
+              "authorId": "user_fo_1",
+              "authorName": "Field Officer Kumar",
+              "content": "It's version 1.2.3.",
+              "createdAt": "2024-07-30T09:32:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ticket_2",
+      "ticketNumber": "TICKET-202407-002",
+      "title": "Question about leave policy",
+      "description": "How many days of sick leave can be carried forward to the next year? The policy document is not clear.",
+      "category": "HR Query",
+      "priority": "Medium",
+      "status": "Resolved",
+      "raisedById": "user_site_1",
+      "raisedByName": "Anjali Site Manager",
+      "raisedAt": "2024-07-29T11:00:00Z",
+      "assignedToId": "user_hr_1",
+      "assignedToName": "Priya HR",
+      "resolvedAt": "2024-07-29T14:00:00Z",
+      "closedAt": null,
+      "rating": null,
+      "feedback": null,
+      "posts": [
+         {
+          "id": "post_2",
+          "ticketId": "ticket_2",
+          "authorId": "user_hr_1",
+          "authorName": "Priya HR",
+          "authorRole": "hr",
+          "content": "Hi Anjali, as per the current policy, a maximum of 5 sick leaves can be carried forward. We are in the process of updating the document to make this clearer. Let me know if you have other questions!",
+          "createdAt": "2024-07-29T14:00:00Z",
+          "likes": ["user_site_1"],
+          "comments": []
+        }
+      ]
+    },
+    {
+      "id": "ticket_3",
+      "ticketNumber": "TICKET-202407-003",
+      "title": "Uniforms not delivered to Prestige Tech Park",
+      "description": "The new batch of uniforms for Prestige Tech Park has not been delivered yet. The expected delivery date was yesterday.",
+      "category": "Operational",
+      "priority": "Urgent",
+      "status": "Open",
+      "raisedById": "user_ops_1",
+      "raisedByName": "Rajesh Operations",
+      "raisedAt": "2024-07-30T14:00:00Z",
+      "assignedToId": null,
+      "assignedToName": null,
+      "resolvedAt": null,
+      "closedAt": null,
+      "rating": null,
+      "feedback": null,
+      "posts": []
+    },
+    {
+      "id": "ticket_4",
+      "ticketNumber": "TICKET-202406-021",
+      "title": "AC not working in main lobby",
+      "description": "The air conditioning in the main lobby of RMZ Ecospace has been down for 2 hours. Please send a technician immediately.",
+      "category": "Operational",
+      "priority": "High",
+      "status": "Closed",
+      "raisedById": "user_fo_2",
+      "raisedByName": "Field Officer Singh",
+      "raisedAt": "2024-06-15T10:00:00Z",
+      "assignedToId": "user_ops_1",
+      "assignedToName": "Rajesh Operations",
+      "resolvedAt": "2024-06-15T12:30:00Z",
+      "closedAt": "2024-06-15T12:45:00Z",
+      "rating": 5,
+      "feedback": "Rajesh was very quick to respond and the technician fixed the issue promptly. Excellent service!",
+      "posts": []
+    }
+]

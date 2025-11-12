@@ -1,0 +1,23 @@
+[
+  {
+    "id": "ins_1",
+    "type": "GMC",
+    "provider": "Star Health Insurance",
+    "policyNumber": "SH-GMC-2024-101",
+    "validTill": "2025-03-31"
+  },
+  {
+    "id": "ins_2",
+    "type": "GPA",
+    "provider": "Life Insurance Corporation (LIC)",
+    "policyNumber": "LIC-GPA-2024-552",
+    "validTill": "2025-03-31"
+  },
+  {
+    "id": "ins_3",
+    "type": "WCA",
+    "provider": "New India Assurance",
+    "policyNumber": "NIA-WCA-2024-089",
+    "validTill": "2025-03-31"
+  }
+]

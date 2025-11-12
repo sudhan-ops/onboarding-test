@@ -1,0 +1,30 @@
+{
+  "pants": [
+    { "id": "gp_30_sf", "size": "30", "length": 40, "waist": 30, "hip": 36, "tilesLoose": 21, "bottomWaist": 14, "fit": "Slim Fit" },
+    { "id": "gp_30_rf", "size": "30", "length": 40, "waist": 30, "hip": 38, "tilesLoose": 22, "bottomWaist": 15, "fit": "Regular Fit" },
+    { "id": "gp_32_sf", "size": "32", "length": 41, "waist": 32, "hip": 38, "tilesLoose": 22, "bottomWaist": 15, "fit": "Slim Fit" },
+    { "id": "gp_32_rf", "size": "32", "length": 41, "waist": 32, "hip": 40, "tilesLoose": 23, "bottomWaist": 16, "fit": "Regular Fit" },
+    { "id": "gp_34_sf", "size": "34", "length": 42, "waist": 34, "hip": 40, "tilesLoose": 23, "bottomWaist": 16, "fit": "Slim Fit" },
+    { "id": "gp_34_rf", "size": "34", "length": 42, "waist": 34, "hip": 42, "tilesLoose": 24, "bottomWaist": 17, "fit": "Regular Fit" },
+    { "id": "gp_36_sf", "size": "36", "length": 43, "waist": 36, "hip": 42, "tilesLoose": 24, "bottomWaist": 17, "fit": "Slim Fit" },
+    { "id": "gp_36_rf", "size": "36", "length": 43, "waist": 36, "hip": 44, "tilesLoose": 25, "bottomWaist": 18, "fit": "Regular Fit" },
+    { "id": "gp_38_sf", "size": "38", "length": 43, "waist": 38, "hip": 44, "tilesLoose": 25, "bottomWaist": 18, "fit": "Slim Fit" },
+    { "id": "gp_38_rf", "size": "38", "length": 43, "waist": 38, "hip": 46, "tilesLoose": 26, "bottomWaist": 19, "fit": "Regular Fit" },
+    { "id": "gp_40_sf", "size": "40", "length": 44, "waist": 40, "hip": 46, "tilesLoose": 26, "bottomWaist": 19, "fit": "Slim Fit" },
+    { "id": "gp_40_rf", "size": "40", "length": 44, "waist": 40, "hip": 48, "tilesLoose": 27, "bottomWaist": 20, "fit": "Regular Fit" },
+    { "id": "gp_42_sf", "size": "42", "length": 44, "waist": 42, "hip": 48, "tilesLoose": 27, "bottomWaist": 20, "fit": "Slim Fit" },
+    { "id": "gp_42_rf", "size": "42", "length": 44, "waist": 42, "hip": 50, "tilesLoose": 28, "bottomWaist": 21, "fit": "Regular Fit" }
+  ],
+  "shirts": [
+    { "id": "gs_m_sf", "size": "M", "length": 28, "sleeves": 24, "sleevesLoose": 7, "chest": 40, "halfChestLoose": 20, "shoulder": 17, "collar": 15.5, "fit": "Slim Fit" },
+    { "id": "gs_m_rf", "size": "M", "length": 28, "sleeves": 24, "sleevesLoose": 7.5, "chest": 42, "halfChestLoose": 21, "shoulder": 17.5, "collar": 15.5, "fit": "Regular Fit" },
+    { "id": "gs_l_sf", "size": "L", "length": 29, "sleeves": 25, "sleevesLoose": 7.5, "chest": 42, "halfChestLoose": 21, "shoulder": 18, "collar": 16, "fit": "Slim Fit" },
+    { "id": "gs_l_rf", "size": "L", "length": 29, "sleeves": 25, "sleevesLoose": 8, "chest": 44, "halfChestLoose": 22, "shoulder": 18.5, "collar": 16, "fit": "Regular Fit" },
+    { "id": "gs_xl_sf", "size": "XL", "length": 30, "sleeves": 26, "sleevesLoose": 8, "chest": 44, "halfChestLoose": 22, "shoulder": 19, "collar": 16.5, "fit": "Slim Fit" },
+    { "id": "gs_xl_rf", "size": "XL", "length": 30, "sleeves": 26, "sleevesLoose": 8.5, "chest": 46, "halfChestLoose": 23, "shoulder": 19.5, "collar": 16.5, "fit": "Regular Fit" },
+    { "id": "gs_xxl_sf", "size": "XXL", "length": 31, "sleeves": 27, "sleevesLoose": 8.5, "chest": 46, "halfChestLoose": 23, "shoulder": 20, "collar": 17, "fit": "Slim Fit" },
+    { "id": "gs_xxl_rf", "size": "XXL", "length": 31, "sleeves": 27, "sleevesLoose": 9, "chest": 48, "halfChestLoose": 24, "shoulder": 20.5, "collar": 17, "fit": "Regular Fit" },
+    { "id": "gs_xxxl_sf", "size": "XXXL", "length": 32, "sleeves": 27.5, "sleevesLoose": 9, "chest": 48, "halfChestLoose": 24, "shoulder": 21, "collar": 17.5, "fit": "Slim Fit" },
+    { "id": "gs_xxxl_rf", "size": "XXXL", "length": 32, "sleeves": 27.5, "sleevesLoose": 9.5, "chest": 50, "halfChestLoose": 25, "shoulder": 21.5, "collar": 17.5, "fit": "Regular Fit" }
+  ]
+}

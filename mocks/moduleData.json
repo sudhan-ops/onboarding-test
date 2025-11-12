@@ -1,0 +1,50 @@
+[
+  {
+    "id": "module_admin",
+    "name": "Admin & Access Control",
+    "description": "Permissions for managing users, roles, and system modules.",
+    "permissions": ["manage_users", "manage_roles_and_permissions", "manage_modules"]
+  },
+  {
+    "id": "module_org",
+    "name": "Organization & HR Setup",
+    "description": "Manage sites, clients, and rules for enrollment and attendance.",
+    "permissions": ["manage_sites", "view_entity_management", "manage_enrollment_rules", "manage_attendance_rules"]
+  },
+  {
+    "id": "module_submissions",
+    "name": "Submissions & Verification",
+    "description": "View and manage employee onboarding submissions and approval workflows.",
+    "permissions": ["view_all_submissions", "manage_approval_workflow"]
+  },
+  {
+    "id": "module_operations",
+    "name": "Dashboards & Tracking",
+    "description": "Access to various dashboards and user activity tracking.",
+    "permissions": ["view_operations_dashboard", "view_site_dashboard", "view_field_officer_tracking"]
+  },
+  {
+    "id": "module_billing",
+    "name": "Billing & Costing",
+    "description": "Permissions related to invoices and verification cost analysis.",
+    "permissions": ["view_invoice_summary", "view_verification_costing"]
+  },
+  {
+    "id": "module_employee",
+    "name": "Employee Self-Service",
+    "description": "Basic permissions for all employees.",
+    "permissions": ["create_enrollment", "view_own_attendance", "apply_for_leave"]
+  },
+  {
+    "id": "module_hr_tasks",
+    "name": "HR Tasks & Management",
+    "description": "Manage leaves, policies, insurance, uniforms, and tasks.",
+    "permissions": ["manage_leave_requests", "manage_policies", "manage_insurance", "manage_uniforms", "manage_tasks", "view_all_attendance", "download_attendance_report"]
+  },
+  {
+    "id": "module_system",
+    "name": "System & Developer",
+    "description": "Access developer settings and system configurations.",
+    "permissions": ["view_developer_settings"]
+  }
+]

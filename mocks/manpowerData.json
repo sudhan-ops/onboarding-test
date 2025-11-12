@@ -1,0 +1,41 @@
+{
+  "SITE-TATA": [
+    { "designation": "Security Guard", "count": 10 },
+    { "designation": "Electrician", "count": 2 },
+    { "designation": "Site Supervisor", "count": 1 },
+    { "designation": "Security Supervisor", "count": 2 }
+  ],
+  "SITE-AISSHWARYA": [
+    { "designation": "Housekeeper", "count": 5 },
+    { "designation": "Receptionist", "count": 1 },
+    { "designation": "Gardener", "count": 2 }
+  ],
+  "SITE-INFY": [
+    { "designation": "Chief Security Officer", "count": 1 },
+    { "designation": "Security Supervisor", "count": 5 },
+    { "designation": "Security Guard", "count": 50 },
+    { "designation": "Lady Guard", "count": 10 }
+  ],
+  "SITE-RMZ": [
+    { "designation": "Facility Manager", "count": 1 },
+    { "designation": "Technical Supervisor", "count": 2 },
+    { "designation": "Electrician", "count": 4 },
+    { "designation": "Plumber", "count": 4 },
+    { "designation": "HK Supervisor", "count": 2 },
+    { "designation": "HK Cleaner", "count": 20 }
+  ],
+  "SITE-PRESTIGE": [
+    { "designation": "Property Manager", "count": 1 },
+    { "designation": "Property Executive", "count": 3 },
+    { "designation": "Help Desk Male", "count": 2 },
+    { "designation": "Help Desk Female", "count": 2 }
+  ],
+  "SITE-EMBASSY": [
+    { "designation": "Estate Manager", "count": 1 },
+    { "designation": "Security Supervisor", "count": 10 },
+    { "designation": "Security Guard", "count": 100 },
+    { "designation": "HK Supervisor - Senior", "count": 2 },
+    { "designation": "HK Supervisor", "count": 8 },
+    { "designation": "HK Cleaner", "count": 80 }
+  ]
+}

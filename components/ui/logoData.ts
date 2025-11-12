@@ -1,0 +1,2 @@
+// The logo is now a URL. This may cause issues with PDF generation if the server doesn't have CORS headers.
+export const originalDefaultLogoBase64 = "https://paradigmfms.com/wp-content/uploads/2022/11/Paradigm-Logo-3-1024x157.png";

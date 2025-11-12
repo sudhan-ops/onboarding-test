@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paradigm Employee Onboarding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#005D22',
+            'accent-dark': '#004218',
+            page: '#F9FAFB',
+            card: '#FFFFFF',
+            muted: '#6B7280',
+            'primary-text': '#0F172A',
+            border: '#E6EEF3',
+            'accent-light': 'rgba(0, 93, 34, 0.1)',
+          },
+          boxShadow: {
+            card: '0 6px 18px rgba(15,23,42,0.06)',
+            md: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)',
+          },
+          borderRadius: {
+            xl: '1rem',
+            '2xl': '1.5rem',
+          },
+          fontFamily: {
+            sans: ['Manrope', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://aistudiocdn.com/react-date-range@^2.0.1/dist/styles.css" />
+    <link rel="stylesheet" href="https://aistudiocdn.com/react-date-range@^2.0.1/dist/theme/default.css" />
+    <link rel="stylesheet" href="https://aistudiocdn.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+    /* Custom map marker styles */
+    .user-marker {
+        position: relative;
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 8px;
+        border: 3px solid #005D22; /* accent color */
+        box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        background-size: cover;
+        background-position: center;
+        background-color: #fff;
+    }
+    .user-marker::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #005D22;
+    }
+    .user-marker-popup .leaflet-popup-content-wrapper {
+        border-radius: 8px;
+        padding: 0;
+    }
+    .user-marker-popup .leaflet-popup-content {
+        margin: 10px;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    .user-marker-popup .popup-name {
+        font-weight: bold;
+        margin-bottom: 4px;
+        color: #0F172A;
+    }
+    .user-marker-popup .popup-time {
+        font-size: 12px;
+        color: #6B7280;
+    }
+    .pro-dark-theme .user-marker-popup .leaflet-popup-content-wrapper {
+        background-color: #0d2c18;
+        color: #e5e7eb;
+        border: 1px solid #123820;
+    }
+     .pro-dark-theme .user-marker-popup .popup-name {
+        color: #ffffff;
+    }
+    .pro-dark-theme .user-marker-popup .popup-time {
+        color: #d1d5db;
+    }
+    .pro-dark-theme .leaflet-popup-tip {
+        background-color: #0d2c18;
+    }
+    .pro-dark-theme .leaflet-control-attribution a {
+        color: #86efac; /* A light green from the dark theme */
+    }
+    /* A subtle filter for any map tiles in dark mode to reduce brightness */
+    .pro-dark-theme .leaflet-tile-pane {
+      filter: brightness(0.9) contrast(1.1);
+    }
+
+
+    /* Custom Stepper Styles */
+    .stepIndicator {
+      transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.2, 1), background-color 0.2s ease, border-color 0.2s ease;
+      will-change: transform;
+    }
+
+    .stepIndicatorActive {
+      animation: scale-in 0.28s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+    }
+
+    @keyframes scale-in {
+      0% { transform: scale(0.85); }
+      70% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .stepIcon {
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      will-change: opacity, transform;
+    }
+
+    .stepIconAnimate {
+      animation: fade-slide-in 0.22s ease forwards;
+    }
+
+    @keyframes fade-slide-in {
+      0% {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .shake {
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        transform: translate3d(0, 0, 0);
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+    
+    .splash-logo {
+      animation: splash-logo-pop-up 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    @keyframes splash-logo-pop-up {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      70% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fade-in-scale {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .animate-fade-in-scale {
+      animation: fade-in-scale 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    @keyframes pulse-bg {
+      0%, 100% {
+        background-color: rgba(0, 93, 34, 0.05);
+      }
+      50% {
+        background-color: rgba(0, 93, 34, 0.15);
+      }
+    }
+
+    .animate-pulse-bg {
+      animation: pulse-bg 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    .skeleton-pulse {
+        animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        background-color: #e5e7eb; /* gray-200 */
+    }
+
+    @keyframes skeleton-pulse {
+        50% {
+            opacity: 0.6;
+        }
+    }
+
+    .pro-dark-theme .skeleton-pulse {
+        background-color: #374151; /* gray-600 */
+    }
+
+    /* HIDE SCROLLBAR BUT KEEP FUNCTIONALITY */
+    /* For Firefox */
+    html {
+      scrollbar-width: none;
+    }
+
+    /* For Chrome, Safari, and Opera */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+
+
+    /* FIX: Ensure full page background color and prevent black bars on scroll */
+    html, body, #root {
+      min-height: 100vh;
+    }
+    
+    body {
+        background-color: #F9FAFB; /* Default light theme color */
+    }
+    
+    .form-input {
+      background-color: #FFFFFF; /* bg-card */
+      border: 1px solid #E6EEF3; /* border-border */
+      border-radius: 0.5rem; /* rounded-lg */
+      padding: 0.75rem 1rem;
+      width: 100%;
+      font-size: 0.875rem; /* sm:text-sm */
+      color: #0F172A; /* text-primary-text */
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-input:focus {
+        outline: none;
+        border-color: #005D22; /* border-accent */
+        box-shadow: 0 0 0 1px #005D22; /* focus:ring-1 focus:ring-accent */
+    }
+    .form-input::placeholder {
+        color: #6B7280; /* text-muted */
+    }
+
+    .form-input--error {
+        border-color: #EF4444 !important; /* border-red-500 */
+    }
+    .form-input--error:focus {
+        border-color: #EF4444 !important;
+        box-shadow: 0 0 0 1px #EF4444 !important;
+    }
+    
+    .form-header-title {
+        position: relative;
+        display: inline-block;
+        padding-bottom: 0.5rem;
+    }
+    .form-header-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40%;
+        height: 3px;
+        background-color: #005D22; /* accent */
+        border-radius: 999px;
+    }
+
+    /* Animation for fixing UI glitch */
+    @keyframes fade-in-down {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animate-fade-in-down {
+        animation: fade-in-down 0.2s ease-out forwards;
+    }
+    
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body, .printable-area {
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        border: none;
+        background-color: white !important;
+      }
+      .page-break {
+        page-break-after: always;
+      }
+      .pdf-page {
+        width: 210mm;
+        min-height: 297mm;
+        height: auto;
+        padding: 1cm;
+        box-sizing: border-box;
+      }
+    }
+
+    /* --- Universal UI Component Styles --- */
+    .status-chip, .sync-chip, .leave-status-chip {
+        padding: 0.25rem 0.75rem; display: inline-flex; font-size: 0.75rem;
+        line-height: 1rem; font-weight: 600; border-radius: 9999px;
+        text-transform: capitalize; border: 1px solid transparent;
+    }
+    .status-chip--pending  { background-color: #FEF3C7; color: #92400E; }
+    .status-chip--verified { background-color: #D1FAE5; color: #065F46; }
+    .status-chip--rejected { background-color: #FEE2E2; color: #991B1B; }
+    .status-chip--draft    { background-color: #F3F4F6; color: #374151; }
+
+    .sync-chip--pending_sync { background-color: #DBEAFE; color: #1E40AF; }
+    .sync-chip--synced       { background-color: #D1FAE5; color: #065F46; }
+    .sync-chip--failed       { background-color: #FEE2E2; color: #991B1B; }
+
+    .leave-status-chip--pending_manager_approval { background-color: #FEF3C7; color: #92400E; }
+    .leave-status-chip--pending_hr_confirmation { background-color: #DBEAFE; color: #1E40AF; }
+    .leave-status-chip--approved { background-color: #D1FAE5; color: #065F46; }
+    .leave-status-chip--rejected { background-color: #FEE2E2; color: #991B1B; }
+    
+    .btn { display: inline-flex; align-items: center; justify-content: center; font-weight: 600; border-radius: 9999px; transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid transparent; }
+    .btn-sm { padding: 0.375rem 0.75rem; font-size: 0.75rem; }
+    .btn-md { padding: 0.5rem 1.5rem; font-size: 0.875rem; }
+    .btn-lg { padding: 0.75rem 2rem; font-size: 1rem; }
+    .btn-icon { padding: 0.5rem; } .btn-icon.btn-sm { padding: 0.375rem; } .btn-icon.btn-lg { padding: 0.75rem; }
+    .btn-primary { background-color: #005D22; color: white; } .btn-primary:hover { background-color: #004218; }
+    .btn-secondary { background-color: #E6EEF3; color: #0F172A; } .btn-secondary:hover { background-color: #D1D5DB; }
+    .btn-outline { border-color: #005D22; color: #005D22; } .btn-outline:hover { background-color: rgba(0, 93, 34, 0.1); }
+    .btn-danger { background-color: #EF4444; color: white; } .btn-danger:hover { background-color: #DC2626; }
+    .btn-icon { color: #6B7280; } .btn-icon:hover { background-color: #F3F4F6; }
+
+    .api-setting-item-bg {
+        background-color: #F9FAFB;
+    }
+
+    .auth-separator {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #d1d5db; /* gray-300 */
+        font-size: 0.875rem;
+    }
+    .auth-separator::before,
+    .auth-separator::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #4b5563; /* gray-600 */
+    }
+    .auth-separator:not(:empty)::before {
+        margin-right: .5em;
+    }
+    .auth-separator:not(:empty)::after {
+        margin-left: .5em;
+    }
+    .google-signin-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background-color: #ffffff;
+        color: #1f2937; /* gray-800 */
+        font-weight: 600;
+        border: 1px solid #d1d5db; /* gray-300 */
+        border-radius: 9999px; /* rounded-full */
+        transition: background-color 0.2s ease;
+        font-size: 1rem; /* lg */
+    }
+    .google-signin-btn:hover {
+        background-color: #f3f4f6; /* gray-100 */
+    }
+    .google-signin-btn svg {
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-right: 0.75rem;
+    }
+
+    /* --- Professional Dark Theme --- */
+    .pro-dark-theme {
+        background-color: #041b0f !important;
+        color: #e5e7eb;
+    }
+    body.pro-dark-theme,
+    body.pro-dark-theme #root,
+    .pro-dark-theme .bg-page {
+        background-color: #041b0f !important;
+        color: #e5e7eb;
+    }
+    .pro-dark-theme .bg-card {
+        background-color: #0d2c18;
+        border: 1px solid #123820;
+        border-radius: 1.5rem;
+    }
+    .pro-dark-theme .shadow-card {
+        box-shadow: none;
+    }
+    .pro-dark-theme .text-primary-text { color: #ffffff; }
+    .pro-dark-theme .text-muted { color: #d1d5db; }
+    .pro-dark-theme .border-border { border-color: #123820; }
+    
+    .pro-dark-theme .form-header-title::after {
+        background-color: #32cd32;
+    }
+    .pro-dark-theme .form-input {
+        background-color: #0d2c18;
+        border-color: #123820;
+        color: #ffffff;
+    }
+    .pro-dark-theme .form-input::placeholder { color: #d1d5db; }
+    .pro-dark-theme .form-input:focus { border-color: #22c55e; box-shadow: 0 0 0 1px #22c55e; }
+    .pro-dark-theme .form-input--error { border-color: #ef4444 !important; }
+    .pro-dark-theme .form-input--error:focus { box-shadow: 0 0 0 1px #ef4444 !important; }
+
+    .pro-dark-theme .btn-primary {
+        background-color: #32cd32;
+        color: #0d1a0d;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 12px 24px;
+        text-transform: capitalize;
+    }
+    .pro-dark-theme .btn-primary:hover { background-color: #228b22; }
+    
+    .pro-dark-theme .btn-secondary {
+        background-color: #374151;
+        color: #e5e7eb;
+        border: 1px solid transparent;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .pro-dark-theme .btn-secondary:hover { background-color: #4b5563; }
+    
+    .pro-dark-theme .btn-outline { border-color: #32cd32; color: #32cd32; } .pro-dark-theme .btn-outline:hover { background-color: rgba(50, 205, 50, 0.1); }
+    .pro-dark-theme .btn-danger { background-color: #ef4444; color: white; } .pro-dark-theme .btn-danger:hover { background-color: #dc2626; }
+    .pro-dark-theme .btn-icon { color: #4ade80; } 
+    .pro-dark-theme .btn-icon:hover { background-color: #374151; color: #86efac; }
+
+    .pro-dark-theme .status-chip,
+    .pro-dark-theme .sync-chip,
+    .pro-dark-theme .leave-status-chip {
+        font-size: 0.75rem;
+        border-color: transparent;
+    }
+
+    .pro-dark-theme .status-chip--pending  { background-color: rgba(234, 179, 8, 0.2); color: #facc15; }
+    .pro-dark-theme .status-chip--verified { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; }
+    .pro-dark-theme .status-chip--rejected { background-color: rgba(239, 68, 68, 0.2); color: #f87171; }
+    .pro-dark-theme .status-chip--draft    { background-color: rgba(156, 163, 175, 0.2); color: #9ca3af; }
+    
+    .pro-dark-theme .sync-chip--pending_sync { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .pro-dark-theme .sync-chip--synced       { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; }
+    .pro-dark-theme .sync-chip--failed       { background-color: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+    .pro-dark-theme .leave-status-chip--pending_manager_approval { background-color: rgba(234, 179, 8, 0.2); color: #facc15; }
+    .pro-dark-theme .leave-status-chip--pending_hr_confirmation { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .pro-dark-theme .leave-status-chip--approved { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; }
+    .pro-dark-theme .leave-status-chip--rejected { background-color: rgba(239, 68, 68, 0.2); color: #f87171; }
+    
+    .pro-dark-theme .bg-accent-light {
+        background-color: rgba(50, 205, 50, 0.1);
+    }
+    .pro-dark-theme .text-accent-dark {
+        color: #32cd32;
+    }
+    .pro-dark-theme .api-setting-item-bg {
+        background-color: #0d2c18;
+    }
+    
+    .pro-dark-theme .bg-blue-50 {
+        background-color: rgba(59, 130, 246, 0.1);
+        border-color: rgba(59, 130, 246, 0.3);
+    }
+    .pro-dark-theme .text-blue-800 { color: #bfdbfe; }
+    .pro-dark-theme .text-blue-500 { color: #60a5fa; }
+    
+    .pro-dark-theme header .text-muted {
+        color: #ffffff;
+    }
+    .pro-dark-theme header img {
+        filter: brightness(0) invert(1) grayscale(1);
+    }
+    .pro-dark-theme header button:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    @media (max-width: 767px) {
+      body.pro-dark-theme .flex-col > header.bg-card {
+        border-radius: 0 !important;
+        background-color: transparent !important;
+        border: none !important;
+      }
+    }
+    .pro-dark-theme .pro-select,
+    .pro-dark-theme .pro-select-arrow {
+        background-color: #243524;
+        border: 1px solid #374151;
+        color: #e5e7eb;
+        border-radius: 9999px;
+        padding: 14px;
+        width: 100%;
+        font-size: 15px;
+        min-height: 44px;
+        box-sizing: border-box;
+        display: block;
+    }
+    .pro-dark-theme .pro-select:focus,
+    .pro-dark-theme .pro-select-arrow:focus {
+        outline: none;
+        border-color: #32cd32;
+        box-shadow: 0 0 0 1px #32cd32;
+    }
+    .pro-dark-theme .pro-select-arrow {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca89c' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.75rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 3rem;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    
+    .pro-dark-theme .fo-attendance-card {
+        background-color: #243524;
+        border: 1px solid #374151;
+        border-radius: 12px;
+        padding: 1rem;
+    }
+    .pro-dark-theme .fo-attendance-time {
+        font-size: 0.875rem; /* 14px */
+        color: #9ca89c; /* text-muted */
+    }
+    .pro-dark-theme .fo-attendance-time strong {
+        color: #e5e7eb; /* default text color */
+        font-weight: 600;
+    }
+    .pro-dark-theme .fo-slider {
+        position: relative;
+        width: 100%;
+        height: 56px;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        cursor: grab;
+        user-select: none;
+        -webkit-user-select: none; /* For Safari */
+        transition: background-color 0.3s ease;
+    }
+    .pro-dark-theme .fo-slider:active {
+        cursor: grabbing;
+    }
+    .pro-dark-theme .fo-slider-thumb {
+        position: absolute;
+        top: 4px;
+        width: 48px;
+        height: 48px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .pro-dark-theme .fo-slider-text {
+        font-weight: 600;
+        z-index: 5;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+    }
+    .pro-dark-theme .fo-slider--checkin {
+        background-color: #243524;
+        border: 1px solid #32cd32;
+    }
+    .pro-dark-theme .fo-slider--checkin .fo-slider-text {
+        color: #32cd32;
+    }
+    .pro-dark-theme .fo-slider--checkin .fo-slider-thumb {
+        left: 4px;
+    }
+    .pro-dark-theme .fo-slider--checkin .fo-slider-thumb svg {
+        color: #32cd32;
+    }
+    .pro-dark-theme .fo-slider--checkin.success {
+        background-color: #32cd32;
+    }
+    .pro-dark-theme .fo-slider--checkin.success .fo-slider-text {
+        color: #0d1a0d;
+    }
+    .pro-dark-theme .fo-slider--checkout {
+        background-color: #243524;
+        border: 1px solid #ef4444;
+    }
+    .pro-dark-theme .fo-slider--checkout .fo-slider-text {
+        color: #ef4444;
+    }
+    .pro-dark-theme .fo-slider--checkout .fo-slider-thumb {
+        right: 4px;
+    }
+    .pro-dark-theme .fo-slider--checkout .fo-slider-thumb svg {
+        color: #ef4444;
+    }
+    .pro-dark-theme .fo-slider--checkout.success {
+        background-color: #ef4444;
+    }
+    .pro-dark-theme .fo-slider--checkout.success .fo-slider-text {
+        color: #ffffff;
+    }
+
+
+    /* Responsive Tables */
+    @media (max-width: 767px) {
+        .responsive-table thead {
+            display: none;
+        }
+        .responsive-table tbody, .responsive-table tr, .responsive-table td {
+            display: block;
+            width: 100%;
+        }
+        .responsive-table tr {
+            margin-bottom: 1rem;
+            border-radius: 1.5rem; /* rounded-2xl */
+            overflow: hidden;
+            background-color: #FFFFFF; /* card */
+            padding: 0; /* Padding is now on TDs */
+            border: 1px solid #E6EEF3; /* border-border */
+            box-shadow: none;
+        }
+        /* This rule applies the flexbox layout for label-value pairs, but not to full-width cells like loading/empty messages. */
+        .responsive-table td:not([colSpan]) {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem; /* Padding inside each row */
+            margin-bottom: 0;
+        }
+        /* This rule adds dividers between rows within a card, but not for the card itself. */
+        .responsive-table td:not([colSpan]) + td:not([colSpan]) {
+            border-top: 1px solid #E6EEF3; /* border-border */
+        }
+        /* This rule shows the data-label for each cell as a pseudo-element. */
+        .responsive-table td:not([colSpan])::before {
+            content: attr(data-label);
+            font-weight: 600;
+            color: #0F172A; /* primary-text */
+            padding-right: 1rem; /* Add some space */
+            font-size: 0.875rem;
+        }
+        /* This rule removes the horizontal lines between cards on mobile view for tables that use divide-y */
+        .responsive-table tbody.divide-y > :not([hidden]) ~ :not([hidden]) {
+            border-top-width: 0;
+            border-bottom-width: 0;
+        }
+    }
+    
+    .pro-dark-theme .responsive-table tr {
+        background-color: #0d2c18;
+        border: 1px solid #123820;
+        box-shadow: none;
+        border-radius: 1.5rem;
+        padding: 0;
+        margin-bottom: 1rem;
+    }
+    .pro-dark-theme .responsive-table td:not([colSpan]) + td:not([colSpan]) {
+        border-top-color: #123820;
+    }
+    .pro-dark-theme .responsive-table td:not([colSpan])::before {
+        color: #ffffff;
+    }
+
+    /* Fix for divider color in dark themes */
+    .pro-dark-theme .divide-y.divide-border > :not([hidden]) ~ :not([hidden]) {
+        border-color: #374151;
+    }
+    
+    .pro-dark-theme aside .bg-accent {
+      background-color: rgba(50, 205, 50, 0.2); /* lime-green with alpha */
+      color: #a7f3d0; /* a light green text color */
+    }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.4",
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.25.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.545.0",
+    "zustand/": "https://aistudiocdn.com/zustand@^5.0.8/",
+    "zustand": "https://aistudiocdn.com/zustand@^5.0.8",
+    "leaflet": "https://aistudiocdn.com/leaflet@1.9.4",
+    "react-hook-form": "https://aistudiocdn.com/react-hook-form@^7.65.0",
+    "@hookform/resolvers/": "https://aistudiocdn.com/@hookform/resolvers@^5.2.2/",
+    "react-date-range": "https://aistudiocdn.com/react-date-range@^2.0.1",
+    "react-date-range/": "https://aistudiocdn.com/react-date-range@^2.0.1/",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.0.4",
+    "html2pdf.js": "https://aistudiocdn.com/html2pdf.js@^0.12.1",
+    "yup": "https://aistudiocdn.com/yup@^1.7.1",
+    "date-fns": "https://aistudiocdn.com/date-fns@^4.1.0",
+    "path": "https://aistudiocdn.com/path@^0.12.7",
+    "chart.js": "https://aistudiocdn.com/chart.js@^4.5.1",
+    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.76.1",
+    "vite": "https://aistudiocdn.com/vite@^7.2.2"
+  }
+}
+</script>
+</head>
+<body class="text-primary-text">
+    <div id="root"></div>
+    <div id="modal-root"></div>
+    <script type="module">
+        try {
+            const script = document.createElement('script');
+            script.type = 'module';
+            // Use document.baseURI which is more reliable than window.location.href in some environments.
+            const scriptUrl = new URL('index.tsx', document.baseURI);
+            script.src = scriptUrl.href;
+            document.body.appendChild(script);
+        } catch (e) {
+            console.error('Failed to load main application script:', e);
+            document.getElementById('root').innerHTML = '<div style="text-align: center; padding: 40px; font-family: sans-serif;"><h1>Error</h1><p>Could not load application. Please check the console for details.</p></div>';
+        }
+    </script>
+</body>
+</html>

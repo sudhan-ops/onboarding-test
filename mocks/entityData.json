@@ -1,0 +1,118 @@
+{
+  "groups": [
+    {
+      "id": "group_paradigm",
+      "name": "Paradigm Group",
+      "locations": ["Bengaluru", "Mumbai", "Delhi"],
+      "companies": [
+        {
+          "id": "comp_fms",
+          "name": "Paradigm Facility Management Services",
+          "entities": [
+            {
+              "id": "ent_tata",
+              "name": "TATA Power Solar Systems Ltd.",
+              "organizationId": "SITE-TATA",
+              "location": "Bengaluru",
+              "registeredAddress": "78, Electronics City, Hosur Road, Bengaluru, Karnataka 560100",
+              "registrationType": "CIN",
+              "registrationNumber": "U40106KA1989PLC013143",
+              "gstNumber": "29AAACT3749L1Z5",
+              "panNumber": "AAACT3749L",
+              "email": "contact@tatapower.com"
+            },
+            {
+              "id": "ent_aisshwarya",
+              "name": "Aisshwarya Excellency Apartments",
+              "organizationId": "SITE-AISSHWARYA",
+              "location": "Bengaluru",
+              "registeredAddress": "Gunjur Village, Varthur, Bengaluru, Karnataka 560087",
+              "registrationType": "Society",
+              "registrationNumber": "SOC-12345/2018",
+              "gstNumber": "29AAACW1234A1Z9",
+              "panNumber": "AAACW1234A",
+              "email": "excellence@aisshwarya.com"
+            },
+            {
+              "id": "ent_rmz",
+              "name": "RMZ Ecospace",
+              "organizationId": "SITE-RMZ",
+              "location": "Bengaluru",
+              "registeredAddress": "Outer Ring Road, Bellandur, Bengaluru, Karnataka 560103",
+              "registrationType": "CIN",
+              "registrationNumber": "U70102KA2001PTC029487",
+              "gstNumber": "29AAACR1234B1Z2",
+              "panNumber": "AAACR1234B",
+              "email": "contact@rmzcorp.com"
+            }
+          ]
+        },
+        {
+          "id": "comp_sec",
+          "name": "Paradigm Security Solutions",
+          "entities": [
+            {
+              "id": "ent_infosys",
+              "name": "Infosys Ltd",
+              "organizationId": "SITE-INFY",
+              "location": "Bengaluru",
+              "registeredAddress": "Electronics City, Hosur Road, Bengaluru, Karnataka 560100",
+              "registrationType": "CIN",
+              "registrationNumber": "L85110KA1981PLC004Infosys",
+              "gstNumber": "29AAACI4811K1Z3",
+              "panNumber": "AAACI4811K",
+              "email": "investors@infosys.com"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "group_realestate",
+      "name": "Real Estate Giants",
+      "locations": ["Bengaluru", "Chennai"],
+      "companies": [
+        {
+          "id": "comp_prestige",
+          "name": "Prestige Property Management",
+          "entities": [
+            {
+              "id": "ent_prestige",
+              "name": "Prestige Tech Park",
+              "organizationId": "SITE-PRESTIGE",
+              "location": "Bengaluru"
+            }
+          ]
+        },
+        {
+          "id": "comp_embassy",
+          "name": "Embassy Services",
+          "entities": [
+            {
+              "id": "ent_embassy",
+              "name": "Embassy Manyata Business Park",
+              "organizationId": "SITE-EMBASSY",
+              "location": "Bengaluru"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "backOfficeIdSeries": [
+    {
+      "id": "boid_1",
+      "department": "HR",
+      "designation": "HR Manager",
+      "permanentId": "PHR-",
+      "temporaryId": "THR-"
+    },
+    {
+      "id": "boid_2",
+      "department": "Operations",
+      "designation": "Operations Manager",
+      "permanentId": "POP-",
+      "temporaryId": "TOP-"
+    }
+  ]
+}

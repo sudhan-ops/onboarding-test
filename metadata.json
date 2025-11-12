@@ -1,0 +1,9 @@
+{
+  "name": "Paradigm Employee Onboarding",
+  "description": "A multi-step employee onboarding and verification system. Employees can fill out their details, upload documents, and save drafts. Admins can review, approve, or reject submissions through a verification dashboard.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation",
+    "microphone"
+  ]
+}

@@ -1,0 +1,87 @@
+[
+  {
+    "id": "req_1",
+    "siteId": "SITE-INFY",
+    "siteName": "Infosys Ltd",
+    "gender": "Gents",
+    "requestedDate": "2024-07-28T10:00:00Z",
+    "status": "Pending",
+    "items": [
+      { "sizeId": "gp_34_rf", "sizeLabel": "34", "fit": "Regular Fit", "category": "Pants", "quantity": 10 },
+      { "sizeId": "gs_l_rf", "sizeLabel": "L", "fit": "Regular Fit", "category": "Shirts", "quantity": 10 }
+    ],
+    "source": "Bulk",
+    "requestedById": "user_site_1",
+    "requestedByName": "Anjali Site Manager"
+  },
+  {
+    "id": "req_2",
+    "siteId": "SITE-RMZ",
+    "siteName": "RMZ Ecospace",
+    "gender": "Ladies",
+    "requestedDate": "2024-07-27T14:00:00Z",
+    "status": "Approved",
+    "items": [
+      { "sizeId": "lp_30_rf", "sizeLabel": "30", "fit": "Regular Fit", "category": "Pants", "quantity": 5 },
+      { "sizeId": "ls_m_rf", "sizeLabel": "M", "fit": "Regular Fit", "category": "Shirts", "quantity": 5 }
+    ],
+    "source": "Bulk",
+    "requestedById": "user_ops_1",
+    "requestedByName": "Rajesh Operations"
+  },
+  {
+    "id": "req_3",
+    "siteId": "SITE-TATA",
+    "siteName": "TATA Power",
+    "gender": "Gents",
+    "requestedDate": "2024-07-26T09:00:00Z",
+    "status": "Issued",
+    "items": [
+      { "sizeId": "gp_32_sf", "sizeLabel": "32", "fit": "Slim Fit", "category": "Pants", "quantity": 2 }
+    ],
+    "source": "Individual",
+    "requestedById": "user_site_1",
+    "requestedByName": "Anjali Site Manager",
+    "employeeDetails": [{
+      "employeeName": "Some Employee",
+      "employeeId": "EMP-TATA-01",
+      "items": [{ "itemName": "Pants", "sizeLabel": "32", "fit": "Slim Fit", "quantity": 2 }]
+    }]
+  },
+  {
+    "id": "req_4",
+    "siteId": "SITE-INFY",
+    "siteName": "Infosys Ltd",
+    "gender": "Gents",
+    "requestedDate": "2024-07-25T11:00:00Z",
+    "status": "Rejected",
+    "items": [
+      { "sizeId": "gs_xl_rf", "sizeLabel": "XL", "fit": "Regular Fit", "category": "Shirts", "quantity": 20 }
+    ],
+    "source": "Bulk",
+    "requestedById": "user_site_1",
+    "requestedByName": "Anjali Site Manager"
+  },
+  {
+    "id": "req_enroll_1",
+    "siteId": "SITE-PRESTIGE",
+    "siteName": "Prestige Tech Park",
+    "gender": "Gents",
+    "requestedDate": "2024-07-30T12:00:00Z",
+    "status": "Pending",
+    "items": [
+        { "sizeId": "gp_32_rf", "sizeLabel": "32", "fit": "Regular Fit", "category": "Pants", "quantity": 1 },
+        { "sizeId": "gs_m_rf", "sizeLabel": "M", "fit": "Regular Fit", "category": "Shirts", "quantity": 1 }
+    ],
+    "source": "Enrollment",
+    "requestedByName": "System",
+    "employeeDetails": [{
+        "employeeName": "Amit Singh",
+        "employeeId": "PARA-9001",
+        "items": [
+            { "itemName": "Gents' Pants", "sizeLabel": "32", "fit": "Regular Fit", "quantity": 1 },
+            { "itemName": "Gents' Shirts", "sizeLabel": "M", "fit": "Regular Fit", "quantity": 1 }
+        ]
+    }]
+  }
+]

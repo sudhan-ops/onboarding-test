@@ -1,0 +1,5 @@
+[
+  { "id": "ss_1", "siteId": "SITE-INFY", "name": "Ramesh Kumar", "employeeCode": "SEC-03-001", "designation": "Security Guard" },
+  { "id": "ss_2", "siteId": "SITE-INFY", "name": "Suresh Patel", "employeeCode": "SEC-03-002", "designation": "Security Guard" },
+  { "id": "ss_3", "siteId": "SITE-RMZ", "name": "Geeta Sharma", "employeeCode": "HK-02-001", "designation": "HK Supervisor" }
+]

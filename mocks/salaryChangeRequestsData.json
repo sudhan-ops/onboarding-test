@@ -1,0 +1,5 @@
+[
+    { "id": "scr_1", "onboardingId": "sub_amit_singh_1", "employeeName": "Amit Singh", "siteName": "Infosys Ltd", "requestedBy": "user_site_1", "requestedByName": "Anjali Site Manager", "requestedAt": "2024-07-29T10:00:00Z", "originalAmount": 22000, "requestedAmount": 23500, "status": "pending", "approvedBy": "user_hr_1" },
+    { "id": "scr_2", "onboardingId": "some_other_id", "employeeName": "Rajesh Verma", "siteName": "RMZ Ecospace", "requestedBy": "user_ops_1", "requestedByName": "Rajesh Operations", "requestedAt": "2024-07-25T15:00:00Z", "originalAmount": 21000, "requestedAmount": 21000, "status": "approved" },
+    { "id": "scr_3", "onboardingId": "another_id", "employeeName": "Sita Kumari", "siteName": "TATA Power", "requestedBy": "user_site_1", "requestedByName": "Anjali Site Manager", "requestedAt": "2024-07-22T09:00:00Z", "originalAmount": 19000, "requestedAmount": 20000, "status": "rejected", "rejectionReason": "Salary negotiation not approved by client." }
+]

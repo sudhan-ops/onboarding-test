@@ -1,0 +1,17 @@
+[
+  { "id": "evt_1", "userId": "user_fo_1", "timestamp": "2024-07-28T09:01:15Z", "type": "check-in", "latitude": 12.9716, "longitude": 77.5946 },
+  { "id": "evt_2", "userId": "user_fo_1", "timestamp": "2024-07-28T18:05:30Z", "type": "check-out", "latitude": 12.9716, "longitude": 77.5946 },
+  { "id": "evt_3", "userId": "user_fo_2", "timestamp": "2024-07-28T08:55:00Z", "type": "check-in", "latitude": 12.9716, "longitude": 77.5946 },
+  { "id": "evt_4", "userId": "user_fo_2", "timestamp": "2024-07-28T17:58:00Z", "type": "check-out", "latitude": 12.9716, "longitude": 77.5946 },
+  { "id": "evt_5", "userId": "user_fo_3", "timestamp": "2024-07-27T09:00:00Z", "type": "check-in", "latitude": 12.9352, "longitude": 77.6245 },
+  { "id": "evt_6", "userId": "user_fo_3", "timestamp": "2024-07-27T18:00:00Z", "type": "check-out", "latitude": 12.9352, "longitude": 77.6245 },
+  { "id": "evt_7", "userId": "user_fo_1", "timestamp": "2024-07-29T09:05:00Z", "type": "check-in", "latitude": 12.9698, "longitude": 77.7499 },
+  { "id": "evt_8", "userId": "user_fo_1", "timestamp": "2024-07-29T18:10:00Z", "type": "check-out", "latitude": 12.9698, "longitude": 77.7499 },
+  { "id": "evt_9", "userId": "user_fo_2", "timestamp": "2024-07-29T08:58:00Z", "type": "check-in", "latitude": 12.9255, "longitude": 77.5826 },
+  { "id": "evt_10", "userId": "user_fo_2", "timestamp": "2024-07-29T18:02:00Z", "type": "check-out", "latitude": 12.9255, "longitude": 77.5826 },
+  { "id": "evt_11", "userId": "user_fo_3", "timestamp": "2024-07-29T09:15:00Z", "type": "check-in", "latitude": 12.9983, "longitude": 77.5713 },
+  { "id": "evt_12", "userId": "user_fo_3", "timestamp": "2024-07-29T17:45:00Z", "type": "check-out", "latitude": 12.9983, "longitude": 77.5713 },
+  { "id": "evt_13", "userId": "user_fo_1", "timestamp": "2024-07-30T09:00:00Z", "type": "check-in", "latitude": 12.9716, "longitude": 77.5946 },
+  { "id": "evt_14", "userId": "user_fo_4", "timestamp": "2024-07-30T09:10:00Z", "type": "check-in", "latitude": 13.0358, "longitude": 77.5970 },
+  { "id": "evt_15", "userId": "user_fo_4", "timestamp": "2024-07-30T18:15:00Z", "type": "check-out", "latitude": 13.0358, "longitude": 77.5970 }
+]

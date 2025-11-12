@@ -1,0 +1,17 @@
+[
+  {
+    "id": "pol_1",
+    "name": "Code of Conduct",
+    "description": "General code of conduct for all employees of Paradigm FMS."
+  },
+  {
+    "id": "pol_2",
+    "name": "POSH (Prevention of Sexual Harassment)",
+    "description": "Policy related to the prevention, prohibition, and redressal of sexual harassment at the workplace."
+  },
+  {
+    "id": "pol_3",
+    "name": "Leave Policy",
+    "description": "Rules and regulations regarding employee leaves."
+  }
+]

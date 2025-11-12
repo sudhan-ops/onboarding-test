@@ -1,0 +1,5 @@
+[
+  { "id": "task_1", "name": "Collect KYC for new batch", "description": "Collect and verify KYC documents for the 5 new guards at Infosys campus.", "dueDate": "2024-08-05", "priority": "High", "status": "To Do", "createdAt": "2024-07-28T10:00:00Z", "assignedToId": "user_fo_1", "assignedToName": "Field Officer Kumar", "escalationStatus": "None" },
+  { "id": "task_2", "name": "Renew Gate Pass for Site-A", "dueDate": "2024-07-30", "priority": "Medium", "status": "In Progress", "createdAt": "2024-07-25T12:00:00Z", "assignedToId": "user_fo_2", "assignedToName": "Field Officer Singh", "escalationStatus": "None" },
+  { "id": "task_3", "name": "Submit Weekly Report", "dueDate": "2024-07-26", "priority": "Low", "status": "Done", "createdAt": "2024-07-22T09:00:00Z", "assignedToId": "user_site_1", "assignedToName": "Anjali Site Manager", "escalationStatus": "None" }
+]
